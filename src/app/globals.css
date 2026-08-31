@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0b;
+  --foreground: #f4f1ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar — luxury feel */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #C9A24B, #8C6D2E);
+  border-radius: 8px;
+}
+
+@layer components {
+  .gold-text {
+    @apply bg-gold-gradient bg-clip-text text-transparent;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gold-gradient px-7 py-3 text-sm font-semibold tracking-wide text-ink transition-all duration-300 hover:shadow-gold-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-gold/40 px-7 py-3 text-sm font-semibold tracking-wide text-gold-light transition-all duration-300 hover:border-gold hover:bg-gold/10;
+  }
+
+  .glass {
+    @apply border border-white/5 bg-white/[0.03] backdrop-blur-xl;
+  }
+
+  .card-luxury {
+    @apply rounded-2xl border border-ink-line bg-ink-card shadow-card transition-all duration-500;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-[0.35em] text-gold;
+  }
+
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+}
+
+/* Grain / vignette overlay for showroom depth */
+.showroom-vignette::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(201, 162, 75, 0.06) 0%,
+    rgba(10, 10, 11, 0) 45%
+  );
+  z-index: 1;
+}

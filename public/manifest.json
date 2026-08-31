@@ -1,0 +1,42 @@
+{
+  "name": "ViRaj Rides — Car Rental in Jaipur",
+  "short_name": "ViRaj Rides",
+  "description": "All types of cars on rent in Jaipur at affordable prices. Miles and Smiles.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0b",
+  "theme_color": "#0a0a0b",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "business", "lifestyle"],
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Fleet",
+      "url": "/cars"
+    },
+    {
+      "name": "Admin Dashboard",
+      "url": "/admin"
+    }
+  ]
+}
