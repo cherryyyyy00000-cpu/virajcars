@@ -22,11 +22,10 @@ import {
 import { CARS } from "@/lib/cars";
 import { SITE } from "@/lib/site";
 import { formatINR, cn } from "@/lib/utils";
-import { VRMark } from "@/components/Logo";
 import ShowroomCar from "./ShowroomCar";
 
 /**
- * The front door of the showroom.
+ * The hero — and the front door of the showroom.
  *
  * You arrive at closed showroom doors. Scroll and they part: you step inside a
  * lit hall where the car stands under ceiling spotlights on a polished floor,
@@ -40,17 +39,15 @@ export default function ShowroomEntrance() {
     offset: ["start start", "end start"],
   });
 
-  // The doors part early — the hero has already made the pitch, so the job here
-  // is to get you onto the showroom floor quickly.
-  const leftDoor = useTransform(scrollYProgress, [0.02, 0.28], ["0%", "-102%"]);
-  const rightDoor = useTransform(scrollYProgress, [0.02, 0.28], ["0%", "102%"]);
-  const doorFade = useTransform(scrollYProgress, [0.22, 0.32], [1, 0]);
+  const leftDoor = useTransform(scrollYProgress, [0.04, 0.4], ["0%", "-102%"]);
+  const rightDoor = useTransform(scrollYProgress, [0.04, 0.4], ["0%", "102%"]);
+  const doorFade = useTransform(scrollYProgress, [0.32, 0.44], [1, 0]);
 
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.13], [1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.2], ["0%", "-16%"]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.28], ["0%", "-16%"]);
 
-  const uiOpacity = useTransform(scrollYProgress, [0.16, 0.32], [0, 1]);
-  const carScale = useTransform(scrollYProgress, [0.16, 0.4], [0.84, 1]);
+  const uiOpacity = useTransform(scrollYProgress, [0.24, 0.46], [0, 1]);
+  const carScale = useTransform(scrollYProgress, [0.24, 0.55], [0.84, 1]);
   const watermarkX = useTransform(scrollYProgress, [0.3, 1], ["3%", "-5%"]);
 
   // Cursor tilt
@@ -73,7 +70,7 @@ export default function ShowroomEntrance() {
   const car = CARS[active];
 
   return (
-    <section ref={ref} className="relative h-[160vh]">
+    <section ref={ref} className="relative h-[190vh]">
       <div className="sticky top-0 h-screen overflow-hidden bg-ink">
         {/* ================= SHOWROOM HALL ================= */}
         <motion.div style={{ opacity: uiOpacity }} className="absolute inset-0">
@@ -137,10 +134,9 @@ export default function ShowroomEntrance() {
               <p className="text-[11px] uppercase tracking-[0.28em] text-brand">
                 {car.brand}
               </p>
-              {/* h2, not h1 — the arrival hero above owns the page's h1 */}
-              <h2 className="font-display text-3xl font-bold leading-tight sm:text-4xl">
+              <h1 className="font-display text-3xl font-bold leading-tight sm:text-4xl">
                 {car.name}
-              </h2>
+              </h1>
               <p className="mt-0.5 text-xs text-foreground/45">{car.tagline}</p>
             </div>
 
@@ -328,25 +324,23 @@ export default function ShowroomEntrance() {
           </motion.div>
         </motion.div>
 
-        {/* ========== THRESHOLD MARK (etched on the closed glass doors) ==========
-            Deliberately just the monogram: the hero above has already made the
-            pitch, so repeating it here is what made the opening drag. */}
+        {/* ================= WELCOME (over closed doors) ================= */}
         <motion.div
           style={{ opacity: titleOpacity, y: titleY }}
           className="pointer-events-none absolute inset-0 z-50 flex flex-col items-center justify-center px-6 text-center"
         >
-          <div className="pointer-events-none absolute h-[46vh] w-[46vh] rounded-full bg-radial-brand" />
-          <VRMark size={62} className="relative" />
-          <p className="relative mt-5 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-            <span className="brand-text">{SITE.brandLead}</span>{" "}
-            <span className="text-white/85">{SITE.brandTail}</span>
+          <div className="pointer-events-none absolute h-[58vh] w-[58vh] rounded-full bg-radial-brand" />
+          <p className="relative section-label">{SITE.tagline}</p>
+          <h2 className="relative mt-4 font-display text-5xl font-bold leading-[1.05] sm:text-6xl lg:text-7xl">
+            Welcome to the
+            <br />
+            <span className="brand-text">{SITE.name}</span> Showroom
+          </h2>
+          <p className="relative mx-auto mt-5 max-w-md text-foreground/55">
+            {CARS.length} cars under one roof, at affordable prices in {SITE.city}.
           </p>
-          <p className="relative mt-1.5 text-[10px] uppercase tracking-[0.4em] text-brand/70">
-            Showroom
-          </p>
-          <div className="relative mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-white/40">
-            Scroll to enter
-            <ChevronsDown size={14} className="animate-bounce text-brand" />
+          <div className="relative mt-9 inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-6 py-3 text-sm font-semibold text-brand-light">
+            Scroll to enter <ChevronsDown size={16} className="animate-bounce" />
           </div>
         </motion.div>
       </div>
