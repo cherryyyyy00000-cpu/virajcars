@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   motion,
@@ -23,14 +22,15 @@ import {
 import { CARS } from "@/lib/cars";
 import { SITE } from "@/lib/site";
 import { formatINR, cn } from "@/lib/utils";
+import ShowroomCar from "./ShowroomCar";
 
 /**
  * The hero — and the front door of the showroom.
  *
- * You arrive at closed showroom doors. As you scroll, they part and you step
- * inside, where the featured car waits on a lit pedestal with a
- * product-configurator panel: pick a car, see its price, specs and colour,
- * then book it or keep scrolling deeper into the showroom.
+ * You arrive at closed showroom doors. Scroll and they part: you step inside a
+ * lit hall where the car stands under ceiling spotlights on a polished floor,
+ * its reflection beneath it. A configurator panel wraps the car so you can
+ * switch models, read the price and book — then keep scrolling deeper in.
  */
 export default function ShowroomEntrance() {
   const ref = useRef<HTMLDivElement>(null);
@@ -39,28 +39,25 @@ export default function ShowroomEntrance() {
     offset: ["start start", "end start"],
   });
 
-  // --- Doors open as you scroll in ---
-  const leftDoor = useTransform(scrollYProgress, [0.04, 0.42], ["0%", "-102%"]);
-  const rightDoor = useTransform(scrollYProgress, [0.04, 0.42], ["0%", "102%"]);
-  const doorFade = useTransform(scrollYProgress, [0.34, 0.46], [1, 0]);
+  const leftDoor = useTransform(scrollYProgress, [0.04, 0.4], ["0%", "-102%"]);
+  const rightDoor = useTransform(scrollYProgress, [0.04, 0.4], ["0%", "102%"]);
+  const doorFade = useTransform(scrollYProgress, [0.32, 0.44], [1, 0]);
 
-  // --- Welcome title fades as the doors part ---
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.3], ["0%", "-18%"]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.28], ["0%", "-16%"]);
 
-  // --- Interior + configurator fade in once you're inside ---
-  const uiOpacity = useTransform(scrollYProgress, [0.26, 0.48], [0, 1]);
-  const carScale = useTransform(scrollYProgress, [0.26, 0.55], [0.82, 1]);
-  const watermarkX = useTransform(scrollYProgress, [0.3, 1], ["4%", "-6%"]);
+  const uiOpacity = useTransform(scrollYProgress, [0.24, 0.46], [0, 1]);
+  const carScale = useTransform(scrollYProgress, [0.24, 0.55], [0.84, 1]);
+  const watermarkX = useTransform(scrollYProgress, [0.3, 1], ["3%", "-5%"]);
 
-  // --- Cursor tilt on the car ---
+  // Cursor tilt
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const tiltY = useSpring(useTransform(mx, [-0.5, 0.5], [13, -13]), {
+  const tiltY = useSpring(useTransform(mx, [-0.5, 0.5], [11, -11]), {
     stiffness: 140,
     damping: 18,
   });
-  const tiltX = useSpring(useTransform(my, [-0.5, 0.5], [-8, 8]), {
+  const tiltX = useSpring(useTransform(my, [-0.5, 0.5], [-6, 6]), {
     stiffness: 140,
     damping: 18,
   });
@@ -72,40 +69,62 @@ export default function ShowroomEntrance() {
   const car = CARS[active];
 
   return (
-    <section ref={ref} className="relative h-[260vh]">
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {/* ============ SHOWROOM INTERIOR ============ */}
+    <section ref={ref} className="relative h-[280vh]">
+      <div className="sticky top-0 h-screen overflow-hidden bg-ink">
+        {/* ================= SHOWROOM HALL ================= */}
         <motion.div style={{ opacity: uiOpacity }} className="absolute inset-0">
-          {/* ceiling light */}
-          <div className="pointer-events-none absolute inset-x-[16%] top-0 h-28 rounded-b-[50%] bg-gradient-to-b from-white/[0.09] to-transparent blur-2xl" />
-          {/* warm pool of light around the pedestal */}
-          <div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[64vh] w-[64vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 blur-3xl"
-            style={{
-              background: `radial-gradient(circle, ${car.accent}3d 0%, transparent 68%)`,
-            }}
-          />
-          {/* floor */}
-          <div className="showroom-floor pointer-events-none absolute inset-x-0 bottom-0 h-[38vh] [mask-image:linear-gradient(to_top,black,transparent)]" />
-          {/* side walls */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-[12vw] bg-gradient-to-r from-black/70 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-[12vw] bg-gradient-to-l from-black/70 to-transparent" />
+          {/* Back wall wash */}
+          <div className="absolute inset-x-0 top-0 h-[62%] bg-gradient-to-b from-white/[0.05] via-transparent to-transparent" />
+
+          {/* Ceiling light rail */}
+          <div className="absolute inset-x-[18%] top-0 h-1.5 rounded-b-full bg-gradient-to-r from-transparent via-white/50 to-transparent blur-[1px]" />
+
+          {/* Three spotlights aimed at the car */}
+          {[22, 50, 78].map((x) => (
+            <div
+              key={x}
+              className="pointer-events-none absolute top-0 h-[74%] w-[26%] opacity-45"
+              style={{
+                left: `${x}%`,
+                transform: "translateX(-50%)",
+                background:
+                  "linear-gradient(to bottom, rgba(255,252,244,0.30), rgba(255,252,244,0.05) 55%, transparent 78%)",
+                clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
+                filter: "blur(6px)",
+              }}
+            />
+          ))}
+
+          {/* Glossy floor */}
+          <div className="absolute inset-x-0 bottom-0 h-[40%]">
+            <div className="showroom-floor absolute inset-0 [mask-image:linear-gradient(to_top,black,transparent)]" />
+            <div
+              className="absolute inset-x-[10%] top-0 h-full opacity-50 blur-2xl"
+              style={{
+                background: `radial-gradient(ellipse at 50% 0%, ${car.accent}33, transparent 62%)`,
+              }}
+            />
+          </div>
+
+          {/* Side walls */}
+          <div className="absolute inset-y-0 left-0 w-[13vw] bg-gradient-to-r from-black/80 to-transparent" />
+          <div className="absolute inset-y-0 right-0 w-[13vw] bg-gradient-to-l from-black/80 to-transparent" />
         </motion.div>
 
-        {/* Giant brand watermark behind the car */}
+        {/* Brand watermark on the back wall */}
         <motion.span
           style={{ x: watermarkX, opacity: uiOpacity }}
-          className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none whitespace-nowrap text-center font-display text-[24vw] font-bold leading-none text-white/[0.035]"
+          className="pointer-events-none absolute inset-x-0 top-[38%] -translate-y-1/2 select-none whitespace-nowrap text-center font-display text-[23vw] font-bold leading-none text-white/[0.04]"
         >
           {car.brand}
         </motion.span>
 
-        {/* ============ CONFIGURATOR UI ============ */}
+        {/* ================= CONFIGURATOR ================= */}
         <motion.div
           style={{ opacity: uiOpacity }}
-          className="relative z-20 flex h-full flex-col pt-24 pb-6 sm:pt-28"
+          className="relative z-20 flex h-full flex-col pb-5 pt-24 sm:pt-28"
         >
-          {/* --- top row: title + quick actions --- */}
+          {/* Top: model name + quick actions */}
           <div className="container-x flex items-start justify-between">
             <div>
               <p className="text-[11px] uppercase tracking-[0.28em] text-brand">
@@ -119,47 +138,45 @@ export default function ShowroomEntrance() {
 
             <div className="flex items-center gap-2">
               <button
-                onClick={() =>
-                  setLiked((l) => ({ ...l, [car.slug]: !l[car.slug] }))
-                }
+                onClick={() => setLiked((l) => ({ ...l, [car.slug]: !l[car.slug] }))}
                 aria-label="Save this car"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-ink-line bg-ink-card/80 transition-colors hover:border-brand/50"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] backdrop-blur transition-colors hover:border-brand/50"
               >
                 <Heart
                   size={17}
                   className={cn(
                     "transition-colors",
-                    liked[car.slug] ? "fill-brand text-brand" : "text-foreground/50"
+                    liked[car.slug] ? "fill-brand text-brand" : "text-foreground/60"
                   )}
                 />
               </button>
               <a
                 href={`tel:${SITE.phonePrimary}`}
                 aria-label="Call us"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-ink-line bg-ink-card/80 text-foreground/50 transition-colors hover:border-brand/50 hover:text-brand"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-foreground/60 backdrop-blur transition-colors hover:border-brand/50 hover:text-brand"
               >
                 <Phone size={16} />
               </a>
             </div>
           </div>
 
-          {/* --- middle: car on pedestal, flanked by selectors --- */}
+          {/* Middle: the car, flanked by selectors */}
           <div className="relative flex flex-1 items-center">
-            {/* left rail — pick your car (like size pills) */}
-            <div className="absolute left-4 top-1/2 z-30 -translate-y-1/2 sm:left-6">
+            {/* Left rail — model pills */}
+            <div className="absolute left-3 top-1/2 z-30 -translate-y-1/2 sm:left-6">
               <p className="mb-2 text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                 Our Cars
               </p>
-              <div className="flex max-h-[52vh] flex-col gap-2 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex max-h-[54vh] flex-col gap-1.5 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {CARS.map((c, i) => (
                   <button
                     key={c.slug}
                     onClick={() => setActive(i)}
                     className={cn(
-                      "rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all",
+                      "rounded-xl px-3 py-2 text-[11px] font-semibold transition-all",
                       i === active
                         ? "bg-brand-gradient text-ink shadow-brand"
-                        : "border border-ink-line bg-ink-card/70 text-foreground/55 hover:border-brand/40 hover:text-brand-light"
+                        : "border border-white/10 bg-white/[0.05] text-foreground/60 backdrop-blur hover:border-brand/40 hover:text-brand-light"
                     )}
                   >
                     {c.name}
@@ -168,8 +185,8 @@ export default function ShowroomEntrance() {
               </div>
             </div>
 
-            {/* right rail — category swatches */}
-            <div className="absolute right-4 top-1/2 z-30 -translate-y-1/2 text-right sm:right-6">
+            {/* Right rail — colour swatches */}
+            <div className="absolute right-3 top-1/2 z-30 -translate-y-1/2 text-right sm:right-6">
               <p className="mb-2 text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                 Colour
               </p>
@@ -180,10 +197,10 @@ export default function ShowroomEntrance() {
                     onClick={() => setActive(i)}
                     aria-label={`Show ${c.name}`}
                     className={cn(
-                      "h-6 w-6 rounded-md border transition-transform",
+                      "h-7 w-7 rounded-lg border transition-transform",
                       i === active
-                        ? "scale-110 border-brand"
-                        : "border-white/15 hover:scale-105"
+                        ? "scale-110 border-brand ring-2 ring-brand/30"
+                        : "border-white/20 hover:scale-105"
                     )}
                     style={{ background: c.bodyColor }}
                   />
@@ -191,7 +208,7 @@ export default function ShowroomEntrance() {
               </div>
             </div>
 
-            {/* the car */}
+            {/* The car on the showroom floor */}
             <div
               onMouseMove={(e) => {
                 const r = e.currentTarget.getBoundingClientRect();
@@ -202,42 +219,25 @@ export default function ShowroomEntrance() {
                 mx.set(0);
                 my.set(0);
               }}
-              className="mx-auto w-[74%] max-w-2xl [perspective:1300px] sm:w-[64%]"
+              className="mx-auto w-[78%] max-w-3xl [perspective:1400px] sm:w-[66%]"
             >
               <motion.div
                 style={{ rotateY: tiltY, rotateX: tiltX, scale: carScale }}
                 className="will-change-transform [transform-style:preserve-3d]"
               >
                 <div className="animate-float">
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/5 shadow-card">
-                    <Image
-                      key={car.slug}
-                      src={car.image}
-                      alt={`${car.brand} ${car.name} on rent in ${SITE.city}`}
-                      fill
-                      priority
-                      sizes="(max-width: 640px) 78vw, 640px"
-                      quality={74}
-                      className="object-cover"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.07] to-transparent" />
-                  </div>
+                  <ShowroomCar
+                    key={car.slug}
+                    src={car.cutout}
+                    alt={`${car.brand} ${car.name} on rent in ${SITE.city}`}
+                    accent={car.accent}
+                    priority
+                  />
                 </div>
               </motion.div>
 
-              {/* pedestal */}
-              <div className="relative mx-auto mt-4 w-[86%] [perspective:600px]">
-                <div
-                  className="h-9 rounded-[10px] border-t border-white/20 shadow-brand-lg [transform:rotateX(58deg)]"
-                  style={{
-                    background: `linear-gradient(180deg, ${car.accent} 0%, #8E4A20 100%)`,
-                  }}
-                />
-                <div className="mx-auto -mt-1 h-6 w-[70%] rounded-[100%] bg-black/70 blur-lg" />
-              </div>
-
-              {/* carousel dots */}
-              <div className="mt-3 flex justify-center gap-1.5">
+              {/* Carousel dots */}
+              <div className="mt-1 flex justify-center gap-1.5">
                 {CARS.map((c, i) => (
                   <button
                     key={c.slug}
@@ -253,10 +253,9 @@ export default function ShowroomEntrance() {
             </div>
           </div>
 
-          {/* --- bottom bar: price · CTA · specs --- */}
+          {/* Bottom: price · CTA · specs */}
           <div className="container-x">
             <div className="flex items-end justify-between gap-4">
-              {/* price */}
               <div>
                 <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                   Price
@@ -267,12 +266,11 @@ export default function ShowroomEntrance() {
                 <p className="text-[10px] text-foreground/40">per day · self-drive</p>
               </div>
 
-              {/* centre CTA — book + scroll deeper */}
               <div className="flex flex-col items-center gap-1.5">
                 <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                   Scroll down
                 </p>
-                <div className="flex items-center gap-2 rounded-full border border-brand/30 bg-ink-card/80 p-1.5">
+                <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] p-1.5 backdrop-blur">
                   <Link
                     href={`/cars/${car.slug}`}
                     aria-label={`Book the ${car.name}`}
@@ -284,7 +282,6 @@ export default function ShowroomEntrance() {
                 </div>
               </div>
 
-              {/* specs */}
               <div className="hidden text-right sm:block">
                 <p className="mb-1.5 text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                   Specs
@@ -303,7 +300,7 @@ export default function ShowroomEntrance() {
           </div>
         </motion.div>
 
-        {/* ============ THE DOORS ============ */}
+        {/* ================= DOORS ================= */}
         <motion.div
           style={{ opacity: doorFade }}
           className="pointer-events-none absolute inset-0 z-40"
@@ -322,7 +319,7 @@ export default function ShowroomEntrance() {
           </motion.div>
         </motion.div>
 
-        {/* ============ WELCOME TITLE (over the closed doors) ============ */}
+        {/* ================= WELCOME (over closed doors) ================= */}
         <motion.div
           style={{ opacity: titleOpacity, y: titleY }}
           className="pointer-events-none absolute inset-0 z-50 flex flex-col items-center justify-center px-6 text-center"
@@ -348,7 +345,7 @@ export default function ShowroomEntrance() {
 
 function Chip({ icon, value }: { icon: React.ReactNode; value: string }) {
   return (
-    <span className="flex items-center gap-1 rounded-lg border border-ink-line bg-ink-card/70 px-2 py-1.5 text-[11px] font-medium text-foreground/70">
+    <span className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.05] px-2 py-1.5 text-[11px] font-medium text-foreground/70 backdrop-blur">
       <span className="text-brand">{icon}</span>
       {value}
     </span>

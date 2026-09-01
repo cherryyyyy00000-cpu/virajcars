@@ -22,6 +22,8 @@ export type Car = {
    * To show ViRaj Rides' OWN car, just drop a photo at the same path.
    */
   image: string;
+  /** Background-removed cutout, for the showroom pedestal + reflection. */
+  cutout: string;
   /** Photo attribution (Wikimedia Commons). */
   photoCredit: { author: string; license: string; source: string };
   description: string;
@@ -49,6 +51,7 @@ export const CARS: Car[] = [
     bodyColor: "#9aa3ab",
     accent: "#E8A860",
     image: "/cars/maruti-swift.webp",
+    cutout: "/cars/cutout/maruti-swift.webp",
     photoCredit: {
       author: "Premnath Kudva",
       license: "CC BY-SA 3.0",
@@ -78,6 +81,7 @@ export const CARS: Car[] = [
     bodyColor: "#c9c3b6",
     accent: "#C87137",
     image: "/cars/maruti-dzire.webp",
+    cutout: "/cars/cutout/maruti-dzire.webp",
     photoCredit: {
       author: "Biswarup Ganguly",
       license: "CC BY 3.0",
@@ -107,6 +111,7 @@ export const CARS: Car[] = [
     bodyColor: "#4a4f57",
     accent: "#8ab4f8",
     image: "/cars/hyundai-creta.webp",
+    cutout: "/cars/cutout/hyundai-creta.webp",
     photoCredit: {
       author: "Dairokkan9",
       license: "CC BY-SA 4.0",
@@ -137,6 +142,7 @@ export const CARS: Car[] = [
     bodyColor: "#e8e6e1",
     accent: "#C87137",
     image: "/cars/maruti-ertiga.webp",
+    cutout: "/cars/cutout/maruti-ertiga.webp",
     photoCredit: {
       author: "Ramakrishna Mission Vidyapith",
       license: "Public domain",
@@ -166,6 +172,7 @@ export const CARS: Car[] = [
     bodyColor: "#f2f2f0",
     accent: "#C87137",
     image: "/cars/toyota-innova-crysta.webp",
+    cutout: "/cars/cutout/toyota-innova-crysta.webp",
     photoCredit: {
       author: "Premnath Kudva",
       license: "CC BY-SA 4.0",
@@ -196,6 +203,7 @@ export const CARS: Car[] = [
     bodyColor: "#b8232f",
     accent: "#E8A860",
     image: "/cars/mahindra-thar.webp",
+    cutout: "/cars/cutout/mahindra-thar.webp",
     photoCredit: {
       author: "Ank Kumar",
       license: "CC BY-SA 4.0",
@@ -226,6 +234,7 @@ export const CARS: Car[] = [
     bodyColor: "#eceff1",
     accent: "#C87137",
     image: "/cars/mahindra-scorpio.webp",
+    cutout: "/cars/cutout/mahindra-scorpio.webp",
     photoCredit: {
       author: "Ask27",
       license: "CC BY-SA 4.0",
@@ -255,6 +264,7 @@ export const CARS: Car[] = [
     bodyColor: "#f4f4f2",
     accent: "#8ab4f8",
     image: "/cars/hyundai-verna.webp",
+    cutout: "/cars/cutout/hyundai-verna.webp",
     photoCredit: {
       author: "Dinkun Chen",
       license: "CC BY-SA 4.0",
@@ -285,6 +295,7 @@ export const CARS: Car[] = [
     bodyColor: "#8a8378",
     accent: "#E8A860",
     image: "/cars/toyota-fortuner.webp",
+    cutout: "/cars/cutout/toyota-fortuner.webp",
     photoCredit: {
       author: "Matti Blume",
       license: "CC BY-SA 4.0",
@@ -315,6 +326,7 @@ export const CARS: Car[] = [
     bodyColor: "#ffffff",
     accent: "#E8A860",
     image: "/cars/mercedes-e-class.webp",
+    cutout: "/cars/cutout/mercedes-e-class.webp",
     photoCredit: {
       author: "EurovisionNim",
       license: "CC BY-SA 4.0",
