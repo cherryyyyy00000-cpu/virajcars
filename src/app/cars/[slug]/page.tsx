@@ -11,9 +11,9 @@ import {
   Star,
   Check,
 } from "lucide-react";
+import Image from "next/image";
 import { CARS, getCarBySlug } from "@/lib/cars";
 import { formatINR } from "@/lib/utils";
-import CarStageLoader from "@/components/three/CarStageLoader";
 import BookingForm from "@/components/BookingForm";
 
 export function generateStaticParams() {
@@ -57,23 +57,43 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
         </Link>
       </div>
 
-      {/* 3D showcase */}
+      {/* Photo showcase */}
       <section className="container-x mt-6">
         <div
-          className="relative h-[45vh] min-h-[340px] overflow-hidden rounded-3xl border border-ink-line"
+          className="relative h-[52vh] min-h-[360px] overflow-hidden rounded-3xl border border-ink-line"
           style={{
             background: `radial-gradient(ellipse at 50% 100%, ${car.bodyColor}44 0%, #0a0a0b 65%)`,
           }}
         >
-          <CarStageLoader bodyColor={car.bodyColor} accent={car.accent} autoRotate />
-          <div className="absolute left-6 top-6">
+          <Image
+            src={car.image}
+            alt={`${car.brand} ${car.name} on rent in Jaipur`}
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 1200px"
+            className="object-cover"
+          />
+          {/* Cinematic gradient so text stays readable */}
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-ink/40" />
+
+          <div className="absolute left-6 top-6 z-10">
             <span className="rounded-full border border-gold/30 bg-ink/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-gold backdrop-blur">
               {car.category}
             </span>
           </div>
-          <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-foreground/40">
-            ✦ Drag to rotate the {car.name}
-          </p>
+
+          <div className="absolute bottom-6 left-6 z-10">
+            <p className="text-xs uppercase tracking-widest text-gold">{car.brand}</p>
+            <p className="font-display text-3xl font-bold sm:text-4xl">{car.name}</p>
+          </div>
+
+          <div className="absolute bottom-6 right-6 z-10 rounded-2xl border border-gold/25 bg-ink/70 px-4 py-2 backdrop-blur-xl">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/40">From</p>
+            <p className="font-display text-xl font-bold gold-text">
+              {formatINR(car.pricePerDay)}
+              <span className="text-xs font-normal text-foreground/40">/day</span>
+            </p>
+          </div>
         </div>
       </section>
 

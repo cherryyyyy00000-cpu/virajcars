@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Clock, Sparkles, MapPin, Star } from "lucide-react";
-import CarStageLoader from "@/components/three/CarStageLoader";
+import HeroVisual from "@/components/HeroVisual";
+import ScrollShowroom from "@/components/ScrollShowroom";
 import CarCard from "@/components/CarCard";
 import Reveal from "@/components/Reveal";
-import { CARS } from "@/lib/cars";
+import { CARS, getCarBySlug } from "@/lib/cars";
 import { SITE, waLink } from "@/lib/site";
 
 const STATS = [
@@ -27,6 +28,7 @@ const REVIEWS = [
 
 export default function Home() {
   const featured = CARS.slice(0, 6);
+  const signatureCar = getCarBySlug("toyota-fortuner") || CARS[0];
 
   return (
     <>
@@ -76,11 +78,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right — 3D car stage */}
+          {/* Right — cinematic real-car hero */}
           <div className="relative h-[45vh] min-h-[360px] w-full lg:h-[80vh]">
-            <CarStageLoader bodyColor="#C9A24B" accent="#1b1b1d" />
+            <HeroVisual />
             <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-xs text-foreground/30">
-              ✦ Drag to rotate · 3D live preview
+              ✦ Move your cursor · scroll down to explore the showroom
             </p>
           </div>
         </div>
@@ -97,6 +99,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ================= SCROLL-DRIVEN SHOWROOM ================= */}
+      {signatureCar && <ScrollShowroom car={signatureCar} />}
 
       {/* ================= FEATURED FLEET ================= */}
       <section id="fleet" className="py-24">

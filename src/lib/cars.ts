@@ -14,17 +14,25 @@ export type Car = {
   mileage: number; // km/l (approx)
   rating: number;
   reviews: number;
-  // Hex color used for the 3D procedural car body
   bodyColor: string;
   accent: string;
+  /** Main showcase photo. Swap with the actual car photo anytime. */
+  image: string;
   description: string;
   features: string[];
   available: boolean;
 };
 
-// Realistic fleet for a Jaipur self-drive / chauffeur rental —
-// "All types of cars, affordable prices". Prices are indicative per-day rates
-// (self-drive). Update freely to match ViRaj Rides' actual pricing.
+/**
+ * Build an optimized Unsplash image URL.
+ * NOTE: These are high-quality representative photos. To show ViRaj Rides'
+ * ACTUAL cars, just replace the photo ID (or drop in a local /public path)
+ * in each car's `image` field below — nothing else needs to change.
+ */
+export function carImg(id: string, w = 1200, q = 70): string {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=${q}`;
+}
+
 export const CARS: Car[] = [
   {
     id: "1",
@@ -44,6 +52,7 @@ export const CARS: Car[] = [
     reviews: 84,
     bodyColor: "#b91c1c",
     accent: "#f5f5f5",
+    image: carImg("1550355291-bbee04a92027"),
     description:
       "The perfect city companion. The Maruti Swift is fuel-efficient, easy to drive and ideal for zipping around Jaipur — great for couples and solo travellers.",
     features: ["Power steering", "AC", "Bluetooth music", "Great mileage", "Easy parking"],
@@ -67,6 +76,7 @@ export const CARS: Car[] = [
     reviews: 112,
     bodyColor: "#e5e7eb",
     accent: "#C9A24B",
+    image: carImg("1621007947382-bb3c3994e3fb"),
     description:
       "A roomy, comfortable sedan loved for outstation trips and airport transfers. The Dzire offers a smooth ride with generous boot space for luggage.",
     features: ["Spacious boot", "AC", "Touchscreen", "Rear AC vents", "Fuel efficient"],
@@ -90,6 +100,7 @@ export const CARS: Car[] = [
     reviews: 96,
     bodyColor: "#1a1a2e",
     accent: "#8ab4f8",
+    image: carImg("1519641471654-76ce0107ad1b"),
     description:
       "Commanding stance, plush interiors and a smooth automatic. The Hyundai Creta is perfect for family getaways and weekend road trips around Rajasthan.",
     features: ["Sunroof", "Automatic", "Ventilated seats", "Touchscreen", "Rear camera"],
@@ -113,6 +124,7 @@ export const CARS: Car[] = [
     reviews: 78,
     bodyColor: "#2b2f33",
     accent: "#C9A24B",
+    image: carImg("1570733577524-3a047079e80d"),
     description:
       "Spacious, economical and family-ready. The Ertiga seats 7 comfortably and is a top pick for group trips, weddings and temple tours across Rajasthan.",
     features: ["7 seats", "CNG option", "Big boot", "Rear AC", "Comfortable ride"],
@@ -136,6 +148,7 @@ export const CARS: Car[] = [
     reviews: 164,
     bodyColor: "#0f2038",
     accent: "#D8DEE9",
+    image: carImg("1594502184342-2e12f877aa73"),
     description:
       "The most trusted name for long journeys. The Innova Crysta offers captain seats, a powerful diesel engine and unmatched reliability — ideal for outstation tours.",
     features: ["Captain seats", "Powerful diesel", "Premium interior", "Very reliable", "Huge boot"],
@@ -159,6 +172,7 @@ export const CARS: Car[] = [
     reviews: 132,
     bodyColor: "#14342b",
     accent: "#E7C877",
+    image: carImg("1580274455191-1c62238fa333"),
     description:
       "Turn every drive into an adventure. The iconic Mahindra Thar is a head-turner built for fun — perfect for photoshoots, road trips and off-road escapes.",
     features: ["4x4 capable", "Convertible top", "Iconic design", "Touchscreen", "Rugged & fun"],
@@ -182,6 +196,7 @@ export const CARS: Car[] = [
     reviews: 71,
     bodyColor: "#111827",
     accent: "#C9A24B",
+    image: carImg("1519245659620-e859806a8d3b"),
     description:
       "Muscular road presence with 7-seat practicality. The Scorpio-N combines power, space and comfort — a favourite for big families and highway cruising.",
     features: ["7 seats", "Automatic", "Sunroof", "Powerful engine", "Premium audio"],
@@ -205,6 +220,7 @@ export const CARS: Car[] = [
     reviews: 58,
     bodyColor: "#6d28d9",
     accent: "#f5f5f5",
+    image: carImg("1607853554439-0069ec0f29b6"),
     description:
       "Sleek, feature-loaded and fun to drive. The Hyundai Verna is a premium sedan choice for business travel and special occasions in style.",
     features: ["Ventilated seats", "Automatic", "Sunroof", "ADAS features", "Premium cabin"],
@@ -228,6 +244,7 @@ export const CARS: Car[] = [
     reviews: 143,
     bodyColor: "#2b2f33",
     accent: "#C9A24B",
+    image: carImg("1533473359331-0135ef1b58bf"),
     description:
       "Unmatched road presence and power. The Toyota Fortuner is the ultimate statement SUV — perfect for weddings, VIP travel and premium outstation tours.",
     features: ["4x4 available", "Powerful diesel", "Premium leather", "Commanding presence", "Very reliable"],
@@ -251,12 +268,16 @@ export const CARS: Car[] = [
     reviews: 47,
     bodyColor: "#1b1b1d",
     accent: "#C9A24B",
+    image: carImg("1618843479313-40f8afb4b4d8"),
     description:
       "Make an entrance to remember. The Mercedes-Benz E-Class brings executive luxury and elegance — the top choice for weddings, receptions and VIP occasions in Jaipur.",
     features: ["Chauffeur option", "Plush leather", "Ambient lighting", "Premium sound", "Wedding-ready"],
     available: true,
   },
 ];
+
+// A dramatic hero image for the cinematic landing showroom.
+export const HERO_IMAGE = carImg("1552519507-da3b142c6e3d", 1600, 75);
 
 export function getCarBySlug(slug: string): Car | undefined {
   return CARS.find((c) => c.slug === slug);

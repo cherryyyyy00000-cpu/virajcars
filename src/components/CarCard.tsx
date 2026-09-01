@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Users, Gauge, Fuel, Star, ArrowUpRight } from "lucide-react";
 import { Car } from "@/lib/cars";
@@ -16,14 +17,14 @@ export default function CarCard({ car, index = 0 }: { car: Car; index?: number }
       whileHover={{ y: -8 }}
       className="card-luxury group overflow-hidden hover:border-gold/40 hover:shadow-gold-lg"
     >
-      {/* Visual header — gradient stage evoking a lit showroom platform */}
+      {/* Real photo showroom stage */}
       <div
-        className="relative flex h-52 items-end justify-center overflow-hidden"
+        className="relative flex h-52 items-center justify-center overflow-hidden"
         style={{
           background: `radial-gradient(ellipse at 50% 120%, ${car.bodyColor}55 0%, #0a0a0b 70%)`,
         }}
       >
-        <div className="absolute inset-x-0 top-4 flex justify-between px-5">
+        <div className="absolute inset-x-0 top-4 z-10 flex justify-between px-5">
           <span className="rounded-full border border-gold/30 bg-ink/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-gold backdrop-blur">
             {car.category}
           </span>
@@ -32,19 +33,14 @@ export default function CarCard({ car, index = 0 }: { car: Car; index?: number }
           </span>
         </div>
 
-        {/* Stylized car silhouette using CSS — real 3D shows on detail page */}
-        <div
-          className="mb-6 h-24 w-56 rounded-t-[3rem] rounded-b-lg shadow-2xl transition-transform duration-700 group-hover:scale-110"
-          style={{
-            background: `linear-gradient(160deg, ${car.bodyColor}, ${car.bodyColor}bb)`,
-            boxShadow: `0 20px 50px -12px ${car.bodyColor}aa`,
-          }}
-        >
-          <div className="mt-3 flex justify-around px-6">
-            <div className="h-8 w-20 rounded-t-2xl bg-black/40" />
-          </div>
-        </div>
-        <div className="absolute bottom-0 h-1 w-3/4 rounded-full bg-gold/40 blur-md" />
+        <Image
+          src={car.image}
+          alt={`${car.brand} ${car.name}`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-card via-transparent to-transparent" />
       </div>
 
       <div className="p-6">
