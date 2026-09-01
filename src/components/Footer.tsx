@@ -49,6 +49,19 @@ export default function Footer() {
           <p className="mt-6 text-xs text-foreground/40">
             GSTIN: <span className="font-mono text-foreground/60">{SITE.gstin}</span>
           </p>
+          <p className="mt-3 text-[10px] leading-relaxed text-foreground/25">
+            3D showroom model &ldquo;Car Concept&rdquo; by Eric Chadwick / Darmstadt Graphics
+            Group, licensed{" "}
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline hover:text-gold/60"
+            >
+              CC BY 4.0
+            </a>
+            .
+          </p>
         </div>
 
         <div>
