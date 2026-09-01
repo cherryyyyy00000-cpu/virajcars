@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Clock, Sparkles, MapPin, Star, Phone } from "lucide-react";
-import HeroVisual from "@/components/HeroVisual";
+import { ArrowRight, ShieldCheck, Clock, Sparkles, Star, Phone } from "lucide-react";
+import ShowroomEntrance from "@/components/showroom/ShowroomEntrance";
 import ShowroomJourney from "@/components/showroom/ShowroomJourney";
 import Reveal from "@/components/Reveal";
 import { SITE, waLink } from "@/lib/site";
@@ -27,58 +27,11 @@ const REVIEWS = [
 export default function Home() {
   return (
     <>
-      {/* ================= HERO ================= */}
-      <section className="relative min-h-screen overflow-hidden">
-        <div className="pointer-events-none absolute left-1/2 top-1/3 h-[560px] w-[560px] -translate-x-1/2 rounded-full bg-radial-brand blur-3xl" />
+      {/* ===== HERO = SHOWROOM ENTRANCE (doors open, car configurator) ===== */}
+      <ShowroomEntrance />
 
-        <div className="container-x relative grid min-h-screen items-center gap-8 pt-28 lg:grid-cols-2 lg:pt-0">
-          <div className="animate-fade-up">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/5 px-4 py-2 text-xs font-medium text-brand-light">
-              <MapPin size={13} /> {SITE.city} · {SITE.tagline}
-            </div>
-            <h1 className="font-display text-5xl font-bold leading-[1.05] sm:text-6xl xl:text-7xl">
-              All Types of Cars,
-              <br />
-              <span className="brand-text">Affordable Prices</span>
-            </h1>
-            <p className="mt-6 max-w-md text-lg leading-relaxed text-foreground/60">
-              From budget hatchbacks to luxury wedding cars — rent in {SITE.city} with
-              reliable service and comfortable rides. Self-drive or with a driver,
-              delivered to your door.
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link href="/cars" className="btn-brand">
-                See All Cars <ArrowRight size={17} />
-              </Link>
-              <a
-                href={waLink(`Hi ${SITE.name}! I want to rent a car in ${SITE.city}.`)}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-outline"
-              >
-                Chat on WhatsApp
-              </a>
-            </div>
-
-            <div className="mt-12 flex flex-wrap gap-8">
-              {STATS.slice(0, 3).map((s) => (
-                <div key={s.label}>
-                  <p className="font-display text-3xl font-bold brand-text">{s.value}</p>
-                  <p className="text-xs uppercase tracking-wider text-foreground/40">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative h-[42vh] min-h-[320px] w-full lg:h-[74vh]">
-            <HeroVisual />
-            <p className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-xs text-foreground/30">
-              ✦ Scroll down to enter the showroom
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* ========= WALK THROUGH THE SHOWROOM (car bays) ========= */}
+      <ShowroomJourney />
 
       {/* ================= STATS ================= */}
       <section className="relative z-10 border-y border-ink-line bg-ink-soft">
@@ -91,9 +44,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* ========= THE SHOWROOM WALKTHROUGH ========= */}
-      <ShowroomJourney />
 
       {/* ================= HOW IT WORKS ================= */}
       <section
