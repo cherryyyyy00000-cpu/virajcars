@@ -4,7 +4,7 @@ import ShowroomExterior from "@/components/showroom/ShowroomExterior";
 import ShowroomEntrance from "@/components/showroom/ShowroomEntrance";
 import ShowroomJourney from "@/components/showroom/ShowroomJourney";
 import Reveal from "@/components/Reveal";
-import { SITE, waLink } from "@/lib/site";
+import { SITE } from "@/lib/site";
 
 const STATS = [
   { value: "10+", label: "Cars in Our Fleet" },

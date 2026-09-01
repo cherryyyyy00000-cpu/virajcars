@@ -1,84 +1,123 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Download, X, Share } from "lucide-react";
-
-type BIPEvent = Event & { prompt: () => Promise<void>; userChoice?: Promise<unknown> };
+import { useCallback, useEffect, useState } from "react";
+import { Download, X, Share, Plus, MoreVertical } from "lucide-react";
+import {
+  APP_INSTALLED_EVENT,
+  INSTALL_PROMPT_EVENT,
+  SHOW_INSTALL_EVENT,
+  getBridge,
+  isDismissed,
+  isIosLike,
+  isStandalone,
+  snoozeInstall,
+  type InstallPromptEvent,
+} from "@/lib/pwa";
 
 /**
  * Install-app prompt.
  *
- * Chrome/Edge/Android fire `beforeinstallprompt`, so we show a real install
- * button. iOS Safari has no such event, so we show short "Add to Home Screen"
- * instructions instead — that way the option is always visible.
+ * The event that powers this is captured before hydration (see lib/pwa.ts), so
+ * a fast or cached load can no longer swallow it. If the browser gives us no
+ * event at all we still show platform instructions, and the footer link can
+ * open this panel on demand — so there is always a way to install.
  */
 export default function InstallPWA() {
-  const [deferred, setDeferred] = useState<BIPEvent | null>(null);
-  const [showIosHelp, setShowIosHelp] = useState(false);
+  const [deferred, setDeferred] = useState<InstallPromptEvent | null>(null);
+  const [platform, setPlatform] = useState<"native" | "ios" | "generic">("generic");
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(true);
+  /** Opened deliberately from the footer — ignores the snooze. */
+  const [manual, setManual] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (isStandalone()) return;
 
-    // Already installed?
-    const standalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    if (standalone) return;
+    const bridge = getBridge();
+    const stashed = bridge?.evt ?? null;
+    const ios = isIosLike();
 
-    if (localStorage.getItem("vr_install_dismissed") === "1") return;
-    setDismissed(false);
-
-    const onPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferred(e as BIPEvent);
-      setVisible(true);
-    };
-    window.addEventListener("beforeinstallprompt", onPrompt);
-
-    // iOS fallback — no beforeinstallprompt support
-    const ua = window.navigator.userAgent;
-    const isIos = /iPad|iPhone|iPod/.test(ua) && !("MSStream" in window);
-    if (isIos) {
-      setShowIosHelp(true);
-      setVisible(true);
+    if (stashed) {
+      setDeferred(stashed);
+      setPlatform("native");
+    } else if (ios) {
+      setPlatform("ios");
     }
 
-    return () => window.removeEventListener("beforeinstallprompt", onPrompt);
+    // Auto-surface only when we can actually offer something useful, and only
+    // after a beat so it never competes with the hero for the first paint.
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if ((stashed || ios) && !isDismissed()) {
+      timer = setTimeout(() => setVisible(true), 2500);
+    }
+
+    const onPrompt = () => {
+      const evt = getBridge()?.evt ?? null;
+      if (!evt) return;
+      setDeferred(evt);
+      setPlatform("native");
+      if (!isDismissed()) setVisible(true);
+    };
+
+    const onInstalled = () => {
+      setVisible(false);
+      setManual(false);
+      setDeferred(null);
+    };
+
+    // Footer / anywhere else asking for the panel explicitly.
+    const onShow = () => {
+      setManual(true);
+      setVisible(true);
+    };
+
+    window.addEventListener(INSTALL_PROMPT_EVENT, onPrompt);
+    window.addEventListener(APP_INSTALLED_EVENT, onInstalled);
+    window.addEventListener(SHOW_INSTALL_EVENT, onShow);
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener(INSTALL_PROMPT_EVENT, onPrompt);
+      window.removeEventListener(APP_INSTALLED_EVENT, onInstalled);
+      window.removeEventListener(SHOW_INSTALL_EVENT, onShow);
+    };
   }, []);
 
-  function close() {
+  const close = useCallback(() => {
     setVisible(false);
-    localStorage.setItem("vr_install_dismissed", "1");
-  }
+    // A deliberate open shouldn't start a 14-day snooze.
+    if (!manual) snoozeInstall();
+    setManual(false);
+  }, [manual]);
 
-  async function install() {
+  const install = useCallback(async () => {
     if (!deferred) return;
-    await deferred.prompt();
+    try {
+      await deferred.prompt();
+      const choice = await deferred.userChoice;
+      if (choice?.outcome === "dismissed") snoozeInstall();
+    } catch {
+      /* prompt can only be used once — fall through */
+    }
+    setDeferred(null);
     setVisible(false);
-  }
+    setManual(false);
+  }, [deferred]);
 
-  if (dismissed || !visible) return null;
+  if (!visible) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-[60] max-w-[300px] rounded-2xl border border-brand/25 bg-ink-card/95 p-4 shadow-card">
+    <div className="fixed bottom-4 left-4 z-[60] max-w-[310px] rounded-2xl border border-brand/25 bg-ink-card p-4 shadow-card">
       <button
         onClick={close}
         aria-label="Dismiss"
-        className="absolute right-2 top-2 text-foreground/30 hover:text-foreground/70"
+        className="absolute right-2 top-2 text-foreground/30 transition-colors hover:text-foreground/70"
       >
         <X size={15} />
       </button>
 
       <p className="pr-5 text-sm font-semibold">Install ViRaj Rides</p>
 
-      {showIosHelp ? (
-        <p className="mt-1.5 text-xs leading-relaxed text-foreground/55">
-          Tap <Share size={12} className="mx-0.5 inline text-brand" /> Share, then
-          &ldquo;Add to Home Screen&rdquo; to use it like an app.
-        </p>
-      ) : (
+      {platform === "native" && deferred ? (
         <>
           <p className="mt-1.5 text-xs leading-relaxed text-foreground/55">
             Get one-tap booking, offline access and a home-screen icon.
@@ -87,6 +126,20 @@ export default function InstallPWA() {
             <Download size={14} /> Install App
           </button>
         </>
+      ) : platform === "ios" ? (
+        <p className="mt-1.5 text-xs leading-relaxed text-foreground/55">
+          Tap <Share size={12} className="mx-0.5 inline text-brand" />
+          <span className="font-medium text-foreground/75">Share</span>, then{" "}
+          <Plus size={12} className="mx-0.5 inline text-brand" />
+          <span className="font-medium text-foreground/75">Add to Home Screen</span>.
+        </p>
+      ) : (
+        <p className="mt-1.5 text-xs leading-relaxed text-foreground/55">
+          Open your browser menu{" "}
+          <MoreVertical size={12} className="mx-0.5 inline text-brand" /> and choose{" "}
+          <span className="font-medium text-foreground/75">Install app</span> or{" "}
+          <span className="font-medium text-foreground/75">Add to Home screen</span>.
+        </p>
       )}
     </div>
   );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { SITE } from "@/lib/site";
 import Logo from "@/components/Logo";
+import InstallAppLink from "@/components/InstallAppLink";
 
 export default function Footer() {
   return (
@@ -27,6 +28,7 @@ export default function Footer() {
             <li><Link href="/cars" className="hover:text-brand-light">Our Cars</Link></li>
             <li><Link href="/#experience" className="hover:text-brand-light">How It Works</Link></li>
             <li><Link href="/credits" className="hover:text-brand-light">Photo Credits</Link></li>
+            <li><InstallAppLink className="text-left hover:text-brand-light" /></li>
             <li><Link href="/admin" className="hover:text-brand-light">Admin</Link></li>
           </ul>
         </div>
