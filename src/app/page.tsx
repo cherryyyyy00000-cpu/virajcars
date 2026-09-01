@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Clock, Sparkles, Star, Phone } from "lucide-react";
+import ShowroomExterior from "@/components/showroom/ShowroomExterior";
 import ShowroomEntrance from "@/components/showroom/ShowroomEntrance";
 import ShowroomJourney from "@/components/showroom/ShowroomJourney";
 import Reveal from "@/components/Reveal";
@@ -27,7 +28,10 @@ const REVIEWS = [
 export default function Home() {
   return (
     <>
-      {/* ===== HERO = SHOWROOM ENTRANCE (doors open, car configurator) ===== */}
+      {/* ===== ARRIVE OUTSIDE THE SHOWROOM (building, sign, archway) ===== */}
+      <ShowroomExterior />
+
+      {/* ===== STEP INSIDE (doors open, car configurator) ===== */}
       <ShowroomEntrance />
 
       {/* ========= WALK THROUGH THE SHOWROOM (car bays) ========= */}

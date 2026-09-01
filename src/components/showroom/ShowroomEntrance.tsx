@@ -62,8 +62,9 @@ export default function ShowroomEntrance() {
     damping: 18,
   });
 
+  // The Audi R8 greets you first — it's the showpiece of the floor.
   const [active, setActive] = useState(
-    Math.max(0, CARS.findIndex((c) => c.slug === "toyota-fortuner"))
+    Math.max(0, CARS.findIndex((c) => c.slug === "audi-r8"))
   );
   const [liked, setLiked] = useState<Record<string, boolean>>({});
   const car = CARS[active];
@@ -167,16 +168,16 @@ export default function ShowroomEntrance() {
               <p className="mb-2 text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                 Our Cars
               </p>
-              <div className="flex max-h-[54vh] flex-col gap-1.5 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex max-h-[54vh] flex-col gap-2 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {CARS.map((c, i) => (
                   <button
                     key={c.slug}
                     onClick={() => setActive(i)}
                     className={cn(
-                      "rounded-xl px-3 py-2 text-[11px] font-semibold transition-all",
+                      "flex h-11 w-[74px] items-center justify-center rounded-2xl text-[11px] font-bold leading-tight transition-all",
                       i === active
-                        ? "bg-brand-gradient text-ink shadow-brand"
-                        : "border border-white/10 bg-white/[0.05] text-foreground/60 backdrop-blur hover:border-brand/40 hover:text-brand-light"
+                        ? "scale-[1.06] bg-brand-gradient text-ink shadow-brand"
+                        : "bg-white/[0.07] text-white/60 backdrop-blur hover:bg-white/[0.12] hover:text-brand-light"
                     )}
                   >
                     {c.name}
@@ -197,9 +198,9 @@ export default function ShowroomEntrance() {
                     onClick={() => setActive(i)}
                     aria-label={`Show ${c.name}`}
                     className={cn(
-                      "h-7 w-7 rounded-lg border transition-transform",
+                      "h-8 w-8 rounded-xl border-2 transition-transform",
                       i === active
-                        ? "scale-110 border-brand ring-2 ring-brand/30"
+                        ? "scale-110 border-brand ring-2 ring-brand/40 ring-offset-2 ring-offset-ink"
                         : "border-white/20 hover:scale-105"
                     )}
                     style={{ background: c.bodyColor }}
@@ -266,19 +267,20 @@ export default function ShowroomEntrance() {
                 <p className="text-[10px] text-foreground/40">per day · self-drive</p>
               </div>
 
+              {/* Vertical capsule: book on top, scroll hint below */}
               <div className="flex flex-col items-center gap-1.5">
                 <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/35">
-                  Scroll down
+                  Swipe down
                 </p>
-                <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] p-1.5 backdrop-blur">
+                <div className="flex flex-col items-center gap-1 rounded-full bg-white/[0.08] p-1.5 backdrop-blur">
                   <Link
                     href={`/cars/${car.slug}`}
                     aria-label={`Book the ${car.name}`}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-gradient text-ink transition-transform hover:scale-105"
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gradient text-ink shadow-brand transition-transform hover:scale-105"
                   >
-                    <ShoppingBag size={17} />
+                    <ShoppingBag size={18} />
                   </Link>
-                  <ChevronsDown size={18} className="mr-1.5 animate-bounce text-brand" />
+                  <ChevronsDown size={17} className="animate-bounce text-brand" />
                 </div>
               </div>
 

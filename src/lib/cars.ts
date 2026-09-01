@@ -33,6 +33,37 @@ export type Car = {
 
 export const CARS: Car[] = [
   {
+    id: "0",
+    slug: "audi-r8",
+    name: "R8 V10",
+    brand: "Audi",
+    tagline: "Our supercar — for the entrance you'll never forget",
+    category: "Luxury",
+    pricePerDay: 25000,
+    pricePerHour: 3500,
+    seats: 2,
+    transmission: "Automatic",
+    fuel: "Petrol",
+    topSpeed: 320,
+    mileage: 8,
+    rating: 5.0,
+    reviews: 31,
+    bodyColor: "#1CA3DE",
+    accent: "#3EC1F3",
+    image: "/cars/audi-r8.webp",
+    cutout: "/cars/cutout/audi-r8.webp",
+    photoCredit: {
+      author: "Vauxford",
+      license: "CC BY-SA 4.0",
+      source:
+        "https://commons.wikimedia.org/wiki/File:2018_Audi_R8_Coupe_V10_plus_Front.jpg",
+    },
+    description:
+      "The showstopper. A naturally-aspirated V10 Audi R8 for pre-weddings, birthdays, photoshoots and grand entrances — nothing turns heads in Jaipur quite like it. Chauffeur-driven on request.",
+    features: ["V10 engine", "Quattro AWD", "Photoshoot favourite", "Chauffeur option", "Head-turner"],
+    available: true,
+  },
+  {
     id: "1",
     slug: "maruti-swift",
     name: "Swift",

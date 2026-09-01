@@ -1,10 +1,16 @@
 """
-Cuts every car out of its background so it can float on a showroom pedestal
-with a real mirrored reflection underneath — the way a car actually looks
-standing under showroom lights.
+Cuts every car out of its background so it can float on a showroom floor.
 
-Also cleans the white halo left along the edges and saves lightweight WebP
-(with alpha) so the showroom stays fast.
+Hard-won quality notes:
+  * Cut from the FULL uncropped frame (public/cars/original). Cropping first
+    clipped the bottom of the tyres, which looked like a botched cut-out.
+  * birefnet-general gives far cleaner vehicle masks than u2net — wheel
+    spokes, mirrors and aerials survive.
+  * Never erode the alpha. Eroding bites chunks out of tyres and bumpers.
+  * Kill the pale halo with real colour unmixing instead: for a partly
+    transparent pixel, the observed colour is  I = a*F + (1-a)*B.  We know I
+    and a, and B is the (near-white) studio background sampled from the
+    corners, so we can solve for the car's true colour  F = (I - (1-a)B) / a.
 
 Outputs: public/cars/cutout/<slug>.webp
 
@@ -14,32 +20,56 @@ Usage: python3 scripts/cutout-cars.py
 import io
 import os
 import glob
+import numpy as np
 from rembg import remove, new_session
-from PIL import Image, ImageFilter
+from PIL import Image
 
-SRC = "public/cars"
+SRC = "public/cars/original"
 OUT = "public/cars/cutout"
 os.makedirs(OUT, exist_ok=True)
 
-session = new_session("u2net")
+MODEL = os.environ.get("REMBG_MODEL", "birefnet-general")
+session = new_session(MODEL)
 
 
-def clean_edges(img: Image.Image) -> Image.Image:
-    """
-    Erode the alpha channel by ~1px and drop barely-visible pixels.
-    This removes the pale fringe rembg leaves behind, which is very obvious
-    once the car sits on a dark showroom floor.
-    """
-    r, g, b, a = img.split()
-    # Erode: MinFilter pulls the alpha edge inward
-    a = a.filter(ImageFilter.MinFilter(3))
-    # Harden the remaining soft edge
-    a = a.point(lambda v: 0 if v < 40 else (255 if v > 205 else v))
-    a = a.filter(ImageFilter.GaussianBlur(0.5))
-    return Image.merge("RGBA", (r, g, b, a))
+def estimate_background(rgb: np.ndarray) -> np.ndarray:
+    """Average the four corners — these photos all have plain light surrounds."""
+    h, w, _ = rgb.shape
+    k = max(8, min(h, w) // 25)
+    patches = [
+        rgb[:k, :k],
+        rgb[:k, -k:],
+        rgb[-k:, :k],
+        rgb[-k:, -k:],
+    ]
+    return np.median(np.concatenate([p.reshape(-1, 3) for p in patches]), axis=0)
 
 
-def trim(img: Image.Image, pad: int = 8) -> Image.Image:
+def unmix(img: Image.Image) -> Image.Image:
+    """Recover each edge pixel's true colour, removing background spill."""
+    arr = np.asarray(img).astype(np.float32)
+    rgb, a = arr[..., :3], arr[..., 3:4] / 255.0
+
+    bg = estimate_background(rgb).reshape(1, 1, 3)
+
+    # Solve I = a*F + (1-a)*B  →  F = (I - (1-a)B) / a
+    safe_a = np.clip(a, 0.18, 1.0)
+    fg = (rgb - (1.0 - a) * bg) / safe_a
+    fg = np.clip(fg, 0, 255)
+
+    # Only rewrite pixels that are actually on the edge
+    on_edge = (a > 0.02) & (a < 0.98)
+    rgb = np.where(on_edge, fg, rgb)
+
+    # Discard the faintest dust so no grey veil remains
+    a = np.where(a < 0.06, 0.0, a)
+
+    return Image.fromarray(
+        np.uint8(np.clip(np.concatenate([rgb, a * 255.0], axis=-1), 0, 255)), "RGBA"
+    )
+
+
+def trim(img: Image.Image, pad: int = 10) -> Image.Image:
     bbox = img.getbbox()
     if bbox:
         img = img.crop(bbox)
@@ -49,31 +79,25 @@ def trim(img: Image.Image, pad: int = 8) -> Image.Image:
     return canvas
 
 
-files = sorted(glob.glob(os.path.join(SRC, "*.webp")))
-print(f"Found {len(files)} source photos\n")
+files = sorted(glob.glob(os.path.join(SRC, "*.jpg")))
+print(f"Model: {MODEL}")
+print(f"Found {len(files)} full-frame photos\n")
 
-for path in files:
-    slug = os.path.splitext(os.path.basename(path))[0]
+for path_ in files:
+    slug = os.path.splitext(os.path.basename(path_))[0]
     try:
-        with open(path, "rb") as f:
+        with open(path_, "rb") as f:
             raw = f.read()
 
-        cut = remove(
-            raw,
-            session=session,
-            alpha_matting=True,
-            alpha_matting_foreground_threshold=252,
-            alpha_matting_background_threshold=12,
-            alpha_matting_erode_size=10,
-        )
+        cut = remove(raw, session=session)  # no matting, no erosion
 
         img = Image.open(io.BytesIO(cut)).convert("RGBA")
-        img = clean_edges(img)
+        img = unmix(img)
         img = trim(img)
-        img.thumbnail((1100, 1100), Image.LANCZOS)
+        img.thumbnail((1400, 1400), Image.LANCZOS)
 
         dest = os.path.join(OUT, f"{slug}.webp")
-        img.save(dest, "WEBP", quality=86, alpha_quality=92, method=6)
+        img.save(dest, "WEBP", quality=90, alpha_quality=100, method=6)
 
         kb = os.path.getsize(dest) / 1024
         print(f"  OK  {slug}.webp  {img.size[0]}x{img.size[1]}  {kb:.0f} KB")
