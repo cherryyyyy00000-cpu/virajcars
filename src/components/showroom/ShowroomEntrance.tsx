@@ -70,7 +70,7 @@ export default function ShowroomEntrance() {
   const car = CARS[active];
 
   return (
-    <section ref={ref} className="relative h-[280vh]">
+    <section ref={ref} className="relative h-[190vh]">
       <div className="sticky top-0 h-screen overflow-hidden bg-ink">
         {/* ================= SHOWROOM HALL ================= */}
         <motion.div style={{ opacity: uiOpacity }} className="absolute inset-0">
@@ -78,7 +78,7 @@ export default function ShowroomEntrance() {
           <div className="absolute inset-x-0 top-0 h-[62%] bg-gradient-to-b from-white/[0.05] via-transparent to-transparent" />
 
           {/* Ceiling light rail */}
-          <div className="absolute inset-x-[18%] top-0 h-1.5 rounded-b-full bg-gradient-to-r from-transparent via-white/50 to-transparent blur-[1px]" />
+          <div className="absolute inset-x-[18%] top-0 h-1.5 rounded-b-full bg-gradient-to-r from-transparent via-white/50 to-transparent" />
 
           {/* Three spotlights aimed at the car */}
           {[22, 50, 78].map((x) => (
@@ -89,9 +89,12 @@ export default function ShowroomEntrance() {
                 left: `${x}%`,
                 transform: "translateX(-50%)",
                 background:
-                  "linear-gradient(to bottom, rgba(255,252,244,0.30), rgba(255,252,244,0.05) 55%, transparent 78%)",
+                  "linear-gradient(to bottom, rgba(255,252,244,0.26), rgba(255,252,244,0.04) 58%, transparent 80%)",
                 clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
-                filter: "blur(6px)",
+                maskImage:
+                  "linear-gradient(to right, transparent, black 25%, black 75%, transparent)",
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent, black 25%, black 75%, transparent)",
               }}
             />
           ))}
@@ -100,7 +103,7 @@ export default function ShowroomEntrance() {
           <div className="absolute inset-x-0 bottom-0 h-[40%]">
             <div className="showroom-floor absolute inset-0 [mask-image:linear-gradient(to_top,black,transparent)]" />
             <div
-              className="absolute inset-x-[10%] top-0 h-full opacity-50 blur-2xl"
+              className="absolute inset-x-[10%] top-0 h-full opacity-60"
               style={{
                 background: `radial-gradient(ellipse at 50% 0%, ${car.accent}33, transparent 62%)`,
               }}
@@ -141,7 +144,7 @@ export default function ShowroomEntrance() {
               <button
                 onClick={() => setLiked((l) => ({ ...l, [car.slug]: !l[car.slug] }))}
                 aria-label="Save this car"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] backdrop-blur transition-colors hover:border-brand/50"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] transition-colors hover:border-brand/50"
               >
                 <Heart
                   size={17}
@@ -154,7 +157,7 @@ export default function ShowroomEntrance() {
               <a
                 href={`tel:${SITE.phonePrimary}`}
                 aria-label="Call us"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-foreground/60 backdrop-blur transition-colors hover:border-brand/50 hover:text-brand"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-foreground/60 transition-colors hover:border-brand/50 hover:text-brand"
               >
                 <Phone size={16} />
               </a>
@@ -177,7 +180,7 @@ export default function ShowroomEntrance() {
                       "flex h-11 w-[74px] items-center justify-center rounded-2xl text-[11px] font-bold leading-tight transition-all",
                       i === active
                         ? "scale-[1.06] bg-brand-gradient text-ink shadow-brand"
-                        : "bg-white/[0.07] text-white/60 backdrop-blur hover:bg-white/[0.12] hover:text-brand-light"
+                        : "bg-white/[0.07] text-white/60 hover:bg-white/[0.12] hover:text-brand-light"
                     )}
                   >
                     {c.name}
@@ -272,7 +275,7 @@ export default function ShowroomEntrance() {
                 <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/35">
                   Swipe down
                 </p>
-                <div className="flex flex-col items-center gap-1 rounded-full bg-white/[0.08] p-1.5 backdrop-blur">
+                <div className="flex flex-col items-center gap-1 rounded-full bg-white/[0.08] p-1.5">
                   <Link
                     href={`/cars/${car.slug}`}
                     aria-label={`Book the ${car.name}`}
@@ -326,7 +329,7 @@ export default function ShowroomEntrance() {
           style={{ opacity: titleOpacity, y: titleY }}
           className="pointer-events-none absolute inset-0 z-50 flex flex-col items-center justify-center px-6 text-center"
         >
-          <div className="pointer-events-none absolute h-[52vh] w-[52vh] rounded-full bg-radial-brand blur-3xl" />
+          <div className="pointer-events-none absolute h-[58vh] w-[58vh] rounded-full bg-radial-brand" />
           <p className="relative section-label">{SITE.tagline}</p>
           <h2 className="relative mt-4 font-display text-5xl font-bold leading-[1.05] sm:text-6xl lg:text-7xl">
             Welcome to the
@@ -347,7 +350,7 @@ export default function ShowroomEntrance() {
 
 function Chip({ icon, value }: { icon: React.ReactNode; value: string }) {
   return (
-    <span className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.05] px-2 py-1.5 text-[11px] font-medium text-foreground/70 backdrop-blur">
+    <span className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/[0.05] px-2 py-1.5 text-[11px] font-medium text-foreground/70">
       <span className="text-brand">{icon}</span>
       {value}
     </span>

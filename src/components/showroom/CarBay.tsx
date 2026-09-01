@@ -35,18 +35,26 @@ export default function CarBay({ car, index }: { car: Car; index: number }) {
   const reverse = index % 2 === 1;
 
   return (
-    <section ref={ref} className="relative h-[190vh]">
+    <section
+      ref={ref}
+      className="relative h-[125vh]"
+      // Skip layout/paint for bays that are off-screen — with 11 bays this is
+      // the difference between a smooth scroll and a stuttering one.
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 125vh" }}
+    >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        {/* Spotlight over this bay */}
+        {/* Spotlight over this bay — soft-edged gradient, no blur filter */}
         <div
-          className="pointer-events-none absolute top-0 h-[70%] w-[30%] opacity-40"
+          className="pointer-events-none absolute top-0 h-[72%] w-[34%] opacity-45"
           style={{
             left: reverse ? "72%" : "28%",
             transform: "translateX(-50%)",
             background:
-              "linear-gradient(to bottom, rgba(255,252,244,0.26), rgba(255,252,244,0.04) 58%, transparent 80%)",
-            clipPath: "polygon(44% 0%, 56% 0%, 100% 100%, 0% 100%)",
-            filter: "blur(7px)",
+              "linear-gradient(to bottom, rgba(255,252,244,0.22), rgba(255,252,244,0.03) 60%, transparent 82%)",
+            clipPath: "polygon(43% 0%, 57% 0%, 100% 100%, 0% 100%)",
+            maskImage: "linear-gradient(to right, transparent, black 22%, black 78%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 22%, black 78%, transparent)",
           }}
         />
 
@@ -82,7 +90,7 @@ export default function CarBay({ car, index }: { car: Car; index: number }) {
               style={{ rotate: ringSpin }}
               className="pointer-events-none relative mx-auto -mt-6 h-8 w-[72%] rounded-[100%] border border-brand/25 will-change-transform"
             >
-              <div className="absolute inset-0 rounded-[100%] bg-gradient-to-r from-transparent via-brand/25 to-transparent blur-sm" />
+              <div className="absolute inset-0 rounded-[100%] bg-gradient-to-r from-transparent via-brand/25 to-transparent" />
             </motion.div>
           </div>
 
@@ -152,7 +160,7 @@ function Spec({
   label: string;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2.5 backdrop-blur">
+    <div className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2.5">
       <span className="text-brand">{icon}</span>
       <p className="mt-1 text-sm font-semibold leading-none">{value}</p>
       <p className="mt-1 text-[10px] uppercase tracking-wider text-foreground/35">{label}</p>

@@ -17,7 +17,7 @@ export default function ShowroomJourney() {
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="sticky top-0 h-screen">
           {/* ceiling light strip */}
-          <div className="absolute inset-x-[12%] top-0 h-24 rounded-b-[50%] bg-gradient-to-b from-white/[0.06] to-transparent blur-2xl" />
+          <div className="absolute inset-x-[12%] top-0 h-24 rounded-b-[50%] bg-gradient-to-b from-white/[0.06] to-transparent" />
           {/* polished floor */}
           <div className="showroom-floor absolute inset-x-0 bottom-0 h-[40vh] [mask-image:linear-gradient(to_top,black,transparent)]" />
           {/* side walls */}

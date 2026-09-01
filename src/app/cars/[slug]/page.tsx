@@ -77,7 +77,7 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-ink/40" />
 
           <div className="absolute left-6 top-6 z-10">
-            <span className="rounded-full border border-brand/30 bg-ink/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand backdrop-blur">
+            <span className="rounded-full border border-brand/30 bg-ink/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand">
               {car.category}
             </span>
           </div>
@@ -87,7 +87,7 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
             <p className="font-display text-3xl font-bold sm:text-4xl">{car.name}</p>
           </div>
 
-          <div className="absolute bottom-6 right-6 z-10 rounded-2xl border border-brand/25 bg-ink/70 px-4 py-2 backdrop-blur-xl">
+          <div className="absolute bottom-6 right-6 z-10 rounded-2xl border border-brand/25 bg-ink/70 px-4 py-2">
             <p className="text-[10px] uppercase tracking-widest text-foreground/40">From</p>
             <p className="font-display text-xl font-bold brand-text">
               {formatINR(car.pricePerDay)}
