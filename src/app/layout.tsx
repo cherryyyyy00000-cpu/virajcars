@@ -8,6 +8,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import ChatBot from "@/components/ChatBot";
 import InstallPWA from "@/components/InstallPWA";
 import { SITE } from "@/lib/site";
+import { INSTALL_BRIDGE_SCRIPT } from "@/lib/pwa";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const playfair = Playfair_Display({
@@ -73,6 +74,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} font-sans`}>
+        {/* Runs synchronously, before hydration, so Chrome's install prompt can
+            never be missed on a fast or cached load. See lib/pwa.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: INSTALL_BRIDGE_SCRIPT }} />
         <ServiceWorker />
         <Navbar />
         <main className="relative">{children}</main>
