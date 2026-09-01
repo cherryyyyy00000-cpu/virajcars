@@ -29,7 +29,7 @@ export default function FleetPage() {
           transition={{ delay: 0.05 }}
           className="mt-3 font-display text-5xl font-bold sm:text-6xl"
         >
-          Our <span className="gold-text">Luxury Fleet</span>
+          Our <span className="brand-text">Luxury Fleet</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -51,8 +51,8 @@ export default function FleetPage() {
             className={cn(
               "rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300",
               active === cat
-                ? "border-gold bg-gold-gradient text-ink"
-                : "border-ink-line text-foreground/60 hover:border-gold/40 hover:text-gold-light"
+                ? "border-brand bg-brand-gradient text-ink"
+                : "border-ink-line text-foreground/60 hover:border-brand/40 hover:text-brand-light"
             )}
           >
             {cat}

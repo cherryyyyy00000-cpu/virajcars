@@ -1,3 +1,9 @@
+/**
+ * Generates PWA app icons using the ViRaj Rides "VR" monogram from the
+ * company signboard, in the brand's copper-bronze finish.
+ *
+ * Usage: node scripts/gen-icons.mjs
+ */
 import sharp from "sharp";
 import fs from "fs";
 import path from "path";
@@ -5,48 +11,48 @@ import path from "path";
 const outDir = path.join(process.cwd(), "public", "icons");
 fs.mkdirSync(outDir, { recursive: true });
 
-function svg(size) {
-  const fs = size;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 512 512">
+/** @param {boolean} maskable adds safe-area padding for Android maskable icons */
+function svg(maskable = false) {
+  const s = maskable ? 0.68 : 0.82; // monogram scale inside the tile
+  const shift = (512 - 512 * s) / 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E7C877"/>
-      <stop offset="0.5" stop-color="#C9A24B"/>
-      <stop offset="1" stop-color="#8C6D2E"/>
+      <stop offset="0%" stop-color="#E8A860"/>
+      <stop offset="55%" stop-color="#C87137"/>
+      <stop offset="100%" stop-color="#8E4A20"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="112" fill="#0a0a0b"/>
-  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="url(#g)" stroke-width="6" opacity="0.5"/>
-  <!-- Car silhouette -->
-  <g transform="translate(0,26)">
-    <path d="M96 300 q10 -70 70 -78 l40 -46 q16 -18 44 -18 h72 q30 0 46 22 l34 46 q54 6 64 74 l4 30 q2 20 -18 20 h-40 a34 34 0 1 0 -68 0 h-96 a34 34 0 1 0 -68 0 h-38 q-20 0 -18 -20 z"
-      fill="url(#g)"/>
-    <circle cx="188" cy="332" r="24" fill="#0a0a0b"/>
-    <circle cx="188" cy="332" r="10" fill="url(#g)"/>
-    <circle cx="352" cy="332" r="24" fill="#0a0a0b"/>
-    <circle cx="352" cy="332" r="10" fill="url(#g)"/>
-    <path d="M226 176 q10 -12 30 -12 h60 q18 0 28 14 l22 30 h-170 z" fill="#0b0f14" opacity="0.85"/>
+  <rect width="512" height="512" rx="${maskable ? 0 : 108}" fill="#08080A"/>
+  <g transform="translate(${shift},${shift}) scale(${s})">
+    <g transform="translate(0,-18)">
+      <path d="M92 102 L226 388 L288 235"
+        stroke="url(#g)" stroke-width="56" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M296 388 L296 112 L368 112 C430 112 440 205 368 225 L306 235 L430 388"
+        stroke="url(#g)" stroke-width="56" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </g>
+    <text x="256" y="470" font-family="Georgia, 'DejaVu Serif', serif" font-size="52"
+      font-weight="bold" fill="url(#g)" text-anchor="middle">ViRaj Rides</text>
   </g>
-  <text x="256" y="452" font-family="Georgia, serif" font-size="50" font-weight="bold" fill="url(#g)" text-anchor="middle">ViRaj Rides</text>
 </svg>`;
 }
 
-const sizes = [192, 512];
-for (const s of sizes) {
-  await sharp(Buffer.from(svg(s)))
-    .resize(s, s)
+for (const size of [192, 512]) {
+  await sharp(Buffer.from(svg(false)))
+    .resize(size, size)
     .png()
-    .toFile(path.join(outDir, `icon-${s}.png`));
-  console.log(`generated icon-${s}.png`);
+    .toFile(path.join(outDir, `icon-${size}.png`));
+  console.log(`generated icon-${size}.png`);
 }
 
-// Maskable (extra padding) — reuse 512 art
-await sharp(Buffer.from(svg(512)))
+await sharp(Buffer.from(svg(true)))
   .resize(512, 512)
   .png()
-  .toFile(path.join(outDir, `icon-maskable-512.png`));
+  .toFile(path.join(outDir, "icon-maskable-512.png"));
 console.log("generated icon-maskable-512.png");
 
-// Apple touch icon
-await sharp(Buffer.from(svg(180))).resize(180, 180).png().toFile(path.join(outDir, `apple-touch-icon.png`));
-console.log("done");
+await sharp(Buffer.from(svg(false)))
+  .resize(180, 180)
+  .png()
+  .toFile(path.join(outDir, "apple-touch-icon.png"));
+console.log("generated apple-touch-icon.png");

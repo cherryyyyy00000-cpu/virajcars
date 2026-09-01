@@ -6,13 +6,10 @@ import Footer from "@/components/Footer";
 import ServiceWorker from "@/components/ServiceWorker";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ChatBot from "@/components/ChatBot";
+import InstallPWA from "@/components/InstallPWA";
+import { SITE } from "@/lib/site";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
@@ -23,18 +20,20 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://virajrides.vercel.
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: SITE.name,
   title: {
-    default: "ViRaj Rides — Car Rental in Jaipur | Miles and Smiles",
-    template: "%s | ViRaj Rides Jaipur",
+    default: `${SITE.name} — Car Rental in ${SITE.city} | ${SITE.tagline}`,
+    template: `%s | ${SITE.name}`,
   },
   description:
-    "Rent all types of cars in Jaipur at affordable prices — Swift, Dzire, Innova Crysta, Creta, Fortuner, Thar & luxury cars for weddings. Self-drive or chauffeur. Reliable service, comfortable rides.",
+    "Rent all types of cars in Jaipur at affordable prices — Swift, Dzire, Ertiga, Creta, Innova Crysta, Thar, Scorpio, Fortuner and Mercedes E-Class for weddings. Self-drive or with driver. Reliable service, comfortable rides.",
   keywords: [
     "car rental Jaipur",
     "self drive cars Jaipur",
     "Innova Crysta rental Jaipur",
     "wedding car rental Jaipur",
     "Fortuner rent Jaipur",
+    "Thar rent Jaipur",
     "cheap car rental Jaipur",
     "ViRaj Rides",
   ],
@@ -42,25 +41,27 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "ViRaj Rides",
+    title: SITE.name,
   },
   openGraph: {
-    title: "ViRaj Rides — Car Rental in Jaipur | Miles and Smiles",
-    description:
-      "All types of cars on rent in Jaipur at affordable prices. Self-drive or chauffeur. Book online instantly.",
+    title: `${SITE.name} — Car Rental in ${SITE.city}`,
+    description: "All types of cars on rent in Jaipur at affordable prices. Book online instantly.",
     url: SITE_URL,
-    siteName: "ViRaj Rides",
+    siteName: SITE.name,
     locale: "en_IN",
     type: "website",
   },
   icons: {
-    icon: "/icons/icon-192.png",
-    apple: "/icons/icon-192.png",
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0b",
+  themeColor: "#08080a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -71,14 +72,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${playfair.variable} font-sans showroom-vignette`}
-      >
+      <body className={`${inter.variable} ${playfair.variable} font-sans`}>
         <ServiceWorker />
         <Navbar />
-        <main className="relative z-[2]">{children}</main>
+        <main className="relative">{children}</main>
         <WhatsAppButton />
         <ChatBot />
+        <InstallPWA />
         <Footer />
       </body>
     </html>

@@ -51,7 +51,7 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
       <div className="container-x">
         <Link
           href="/cars"
-          className="inline-flex items-center gap-2 text-sm text-foreground/50 transition-colors hover:text-gold-light"
+          className="inline-flex items-center gap-2 text-sm text-foreground/50 transition-colors hover:text-brand-light"
         >
           <ArrowLeft size={16} /> Back to Fleet
         </Link>
@@ -77,19 +77,19 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-ink/40" />
 
           <div className="absolute left-6 top-6 z-10">
-            <span className="rounded-full border border-gold/30 bg-ink/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-gold backdrop-blur">
+            <span className="rounded-full border border-brand/30 bg-ink/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand backdrop-blur">
               {car.category}
             </span>
           </div>
 
           <div className="absolute bottom-6 left-6 z-10">
-            <p className="text-xs uppercase tracking-widest text-gold">{car.brand}</p>
+            <p className="text-xs uppercase tracking-widest text-brand">{car.brand}</p>
             <p className="font-display text-3xl font-bold sm:text-4xl">{car.name}</p>
           </div>
 
-          <div className="absolute bottom-6 right-6 z-10 rounded-2xl border border-gold/25 bg-ink/70 px-4 py-2 backdrop-blur-xl">
+          <div className="absolute bottom-6 right-6 z-10 rounded-2xl border border-brand/25 bg-ink/70 px-4 py-2 backdrop-blur-xl">
             <p className="text-[10px] uppercase tracking-widest text-foreground/40">From</p>
-            <p className="font-display text-xl font-bold gold-text">
+            <p className="font-display text-xl font-bold brand-text">
               {formatINR(car.pricePerDay)}
               <span className="text-xs font-normal text-foreground/40">/day</span>
             </p>
@@ -101,7 +101,7 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
       <section className="container-x mt-10 grid gap-10 pb-24 lg:grid-cols-[1.4fr_1fr]">
         {/* Left: info */}
         <div>
-          <p className="text-sm font-medium uppercase tracking-widest text-gold">
+          <p className="text-sm font-medium uppercase tracking-widest text-brand">
             {car.brand}
           </p>
           <h1 className="mt-1 font-display text-4xl font-bold sm:text-5xl">{car.name}</h1>
@@ -115,7 +115,7 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {specs.map((s) => (
               <div key={s.label} className="card-luxury flex items-center gap-3 p-4">
-                <s.icon className="text-gold" size={20} />
+                <s.icon className="text-brand" size={20} />
                 <div>
                   <p className="text-xs text-foreground/40">{s.label}</p>
                   <p className="text-sm font-semibold">{s.value}</p>
@@ -130,8 +130,8 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {car.features.map((f) => (
                 <div key={f} className="flex items-center gap-2 text-sm text-foreground/70">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gold/15">
-                    <Check size={12} className="text-gold" />
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand/15">
+                    <Check size={12} className="text-brand" />
                   </span>
                   {f}
                 </div>
@@ -140,7 +140,7 @@ export default function CarDetailPage({ params }: { params: { slug: string } }) 
           </div>
 
           <div className="mt-8 flex items-baseline gap-2">
-            <span className="font-display text-4xl font-bold gold-text">
+            <span className="font-display text-4xl font-bold brand-text">
               {formatINR(car.pricePerDay)}
             </span>
             <span className="text-foreground/40">/ day</span>

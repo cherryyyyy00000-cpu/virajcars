@@ -4,7 +4,7 @@
  */
 export const SITE = {
   name: "ViRaj Rides",
-  brandLead: "ViRaj", // gold part of the logo
+  brandLead: "ViRaj", // copper part of the logo
   brandTail: "Rides", // light part of the logo
   tagline: "Miles and Smiles",
   motto: "All Types of Cars · Affordable Prices · Reliable Service · Comfortable Rides",

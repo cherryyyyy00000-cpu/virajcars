@@ -80,8 +80,8 @@ export default function AdminPage() {
     return (
       <div className="flex min-h-screen items-center justify-center px-5 pt-20">
         <div className="card-luxury w-full max-w-sm p-8 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-gold/5">
-            <Lock className="text-gold" size={24} />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-brand/30 bg-brand/5">
+            <Lock className="text-brand" size={24} />
           </div>
           <h1 className="mt-4 font-display text-2xl font-bold">Admin Access</h1>
           <p className="mt-1 text-sm text-foreground/50">
@@ -93,10 +93,10 @@ export default function AdminPage() {
             value={key}
             onChange={(e) => setKey(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && fetchBookings(key)}
-            className="mt-5 w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-gold"
+            className="mt-5 w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-brand"
           />
           {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
-          <button onClick={() => fetchBookings(key)} className="btn-gold mt-4 w-full">
+          <button onClick={() => fetchBookings(key)} className="btn-brand mt-4 w-full">
             {loading ? "Checking…" : "Enter Dashboard"}
           </button>
           <p className="mt-4 text-[11px] text-foreground/30">
@@ -112,7 +112,7 @@ export default function AdminPage() {
     <div className="container-x pt-28 pb-24">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <LayoutDashboard className="text-gold" />
+          <LayoutDashboard className="text-brand" />
           <h1 className="font-display text-3xl font-bold">Admin Dashboard</h1>
         </div>
         <button
@@ -136,7 +136,7 @@ export default function AdminPage() {
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {CARS.map((c) => (
           <div key={c.id} className="card-luxury p-4">
-            <p className="text-xs text-gold">{c.brand}</p>
+            <p className="text-xs text-brand">{c.brand}</p>
             <p className="font-semibold">{c.name}</p>
             <p className="mt-1 text-sm text-foreground/50">{formatINR(c.pricePerDay)}/day</p>
             <span
@@ -177,7 +177,7 @@ export default function AdminPage() {
             <tbody>
               {bookings.map((b) => (
                 <tr key={b.id} className="bg-ink-card">
-                  <td className="rounded-l-xl px-4 py-3 font-mono text-xs text-gold">{b.id}</td>
+                  <td className="rounded-l-xl px-4 py-3 font-mono text-xs text-brand">{b.id}</td>
                   <td className="px-4 py-3">{b.carName}</td>
                   <td className="px-4 py-3">
                     <p className="font-medium">{b.customerName}</p>
@@ -207,7 +207,7 @@ export default function AdminPage() {
                     <select
                       value={b.status}
                       onChange={(e) => changeStatus(b.id, e.target.value as Booking["status"])}
-                      className="rounded-lg border border-ink-line bg-ink px-2 py-1 text-xs outline-none focus:border-gold"
+                      className="rounded-lg border border-ink-line bg-ink px-2 py-1 text-xs outline-none focus:border-brand"
                     >
                       <option value="pending">Pending</option>
                       <option value="confirmed">Confirmed</option>
@@ -238,7 +238,7 @@ function StatCard({
     <div className="card-luxury p-6">
       <div className="flex items-center justify-between">
         <span className="text-sm text-foreground/50">{label}</span>
-        <Icon className="text-gold" size={18} />
+        <Icon className="text-brand" size={18} />
       </div>
       <p className="mt-3 font-display text-3xl font-bold">{value}</p>
     </div>

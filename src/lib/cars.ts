@@ -14,24 +14,20 @@ export type Car = {
   mileage: number; // km/l (approx)
   rating: number;
   reviews: number;
+  /** Accent colour used for lighting/glow in the 3D showroom bay. */
   bodyColor: string;
   accent: string;
-  /** Main showcase photo. Swap with the actual car photo anytime. */
+  /**
+   * Locally-hosted photo of this exact model (served from /public/cars).
+   * To show ViRaj Rides' OWN car, just drop a photo at the same path.
+   */
   image: string;
+  /** Photo attribution (Wikimedia Commons). */
+  photoCredit: { author: string; license: string; source: string };
   description: string;
   features: string[];
   available: boolean;
 };
-
-/**
- * Build an optimized Unsplash image URL.
- * NOTE: These are high-quality representative photos. To show ViRaj Rides'
- * ACTUAL cars, just replace the photo ID (or drop in a local /public path)
- * in each car's `image` field below — nothing else needs to change.
- */
-export function carImg(id: string, w = 1200, q = 70): string {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=${q}`;
-}
 
 export const CARS: Car[] = [
   {
@@ -50,9 +46,14 @@ export const CARS: Car[] = [
     mileage: 22,
     rating: 4.6,
     reviews: 84,
-    bodyColor: "#b91c1c",
-    accent: "#f5f5f5",
-    image: carImg("1550355291-bbee04a92027"),
+    bodyColor: "#9aa3ab",
+    accent: "#E8A860",
+    image: "/cars/maruti-swift.webp",
+    photoCredit: {
+      author: "Premnath Kudva",
+      license: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Maruti_Suzuki_Swift_2092.JPG",
+    },
     description:
       "The perfect city companion. The Maruti Swift is fuel-efficient, easy to drive and ideal for zipping around Jaipur — great for couples and solo travellers.",
     features: ["Power steering", "AC", "Bluetooth music", "Great mileage", "Easy parking"],
@@ -74,9 +75,14 @@ export const CARS: Car[] = [
     mileage: 23,
     rating: 4.7,
     reviews: 112,
-    bodyColor: "#e5e7eb",
-    accent: "#C9A24B",
-    image: carImg("1621007947382-bb3c3994e3fb"),
+    bodyColor: "#c9c3b6",
+    accent: "#C87137",
+    image: "/cars/maruti-dzire.webp",
+    photoCredit: {
+      author: "Biswarup Ganguly",
+      license: "CC BY 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Maruti_Suzuki_Dzire_VXi_VVT.JPG",
+    },
     description:
       "A roomy, comfortable sedan loved for outstation trips and airport transfers. The Dzire offers a smooth ride with generous boot space for luggage.",
     features: ["Spacious boot", "AC", "Touchscreen", "Rear AC vents", "Fuel efficient"],
@@ -98,9 +104,15 @@ export const CARS: Car[] = [
     mileage: 17,
     rating: 4.8,
     reviews: 96,
-    bodyColor: "#1a1a2e",
+    bodyColor: "#4a4f57",
     accent: "#8ab4f8",
-    image: carImg("1519641471654-76ce0107ad1b"),
+    image: "/cars/hyundai-creta.webp",
+    photoCredit: {
+      author: "Dairokkan9",
+      license: "CC BY-SA 4.0",
+      source:
+        "https://commons.wikimedia.org/wiki/File:2021_Hyundai_Creta_SX(O)_CRDi_(India)_front_view.jpg",
+    },
     description:
       "Commanding stance, plush interiors and a smooth automatic. The Hyundai Creta is perfect for family getaways and weekend road trips around Rajasthan.",
     features: ["Sunroof", "Automatic", "Ventilated seats", "Touchscreen", "Rear camera"],
@@ -122,9 +134,14 @@ export const CARS: Car[] = [
     mileage: 20,
     rating: 4.6,
     reviews: 78,
-    bodyColor: "#2b2f33",
-    accent: "#C9A24B",
-    image: carImg("1570733577524-3a047079e80d"),
+    bodyColor: "#e8e6e1",
+    accent: "#C87137",
+    image: "/cars/maruti-ertiga.webp",
+    photoCredit: {
+      author: "Ramakrishna Mission Vidyapith",
+      license: "Public domain",
+      source: "https://commons.wikimedia.org/wiki/File:2022_Maruti_Suzuki_Ertiga_LXi.jpg",
+    },
     description:
       "Spacious, economical and family-ready. The Ertiga seats 7 comfortably and is a top pick for group trips, weddings and temple tours across Rajasthan.",
     features: ["7 seats", "CNG option", "Big boot", "Rear AC", "Comfortable ride"],
@@ -146,9 +163,15 @@ export const CARS: Car[] = [
     mileage: 14,
     rating: 4.9,
     reviews: 164,
-    bodyColor: "#0f2038",
-    accent: "#D8DEE9",
-    image: carImg("1594502184342-2e12f877aa73"),
+    bodyColor: "#f2f2f0",
+    accent: "#C87137",
+    image: "/cars/toyota-innova-crysta.webp",
+    photoCredit: {
+      author: "Premnath Kudva",
+      license: "CC BY-SA 4.0",
+      source:
+        "https://commons.wikimedia.org/wiki/File:Toyota_Innova_Crysta_2.4_Z_front_right.jpg",
+    },
     description:
       "The most trusted name for long journeys. The Innova Crysta offers captain seats, a powerful diesel engine and unmatched reliability — ideal for outstation tours.",
     features: ["Captain seats", "Powerful diesel", "Premium interior", "Very reliable", "Huge boot"],
@@ -170,36 +193,47 @@ export const CARS: Car[] = [
     mileage: 15,
     rating: 4.8,
     reviews: 132,
-    bodyColor: "#14342b",
-    accent: "#E7C877",
-    image: carImg("1580274455191-1c62238fa333"),
+    bodyColor: "#b8232f",
+    accent: "#E8A860",
+    image: "/cars/mahindra-thar.webp",
+    photoCredit: {
+      author: "Ank Kumar",
+      license: "CC BY-SA 4.0",
+      source:
+        'https://commons.wikimedia.org/wiki/File:Mahindra_Thar_SUV_in_"Red_Rage"_color_at_Ashiana_Brahmanda,_East_Singbhum_India_(Ank_Kumar,_Infosys_limited)_01.jpg',
+    },
     description:
       "Turn every drive into an adventure. The iconic Mahindra Thar is a head-turner built for fun — perfect for photoshoots, road trips and off-road escapes.",
-    features: ["4x4 capable", "Convertible top", "Iconic design", "Touchscreen", "Rugged & fun"],
+    features: ["4x4 capable", "Hard top", "Iconic design", "Touchscreen", "Rugged & fun"],
     available: true,
   },
   {
     id: "7",
-    slug: "mahindra-scorpio-n",
-    name: "Scorpio-N",
+    slug: "mahindra-scorpio",
+    name: "Scorpio",
     brand: "Mahindra",
     tagline: "Bold, powerful & commanding",
     category: "SUV",
     pricePerDay: 4200,
     pricePerHour: 580,
     seats: 7,
-    transmission: "Automatic",
+    transmission: "Manual",
     fuel: "Diesel",
-    topSpeed: 175,
+    topSpeed: 160,
     mileage: 15,
     rating: 4.7,
     reviews: 71,
-    bodyColor: "#111827",
-    accent: "#C9A24B",
-    image: carImg("1519245659620-e859806a8d3b"),
+    bodyColor: "#eceff1",
+    accent: "#C87137",
+    image: "/cars/mahindra-scorpio.webp",
+    photoCredit: {
+      author: "Ask27",
+      license: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Mahindra_Scorpio_2014.JPG",
+    },
     description:
-      "Muscular road presence with 7-seat practicality. The Scorpio-N combines power, space and comfort — a favourite for big families and highway cruising.",
-    features: ["7 seats", "Automatic", "Sunroof", "Powerful engine", "Premium audio"],
+      "Muscular road presence with 7-seat practicality. The Scorpio combines power, space and comfort — a favourite for big families and highway cruising.",
+    features: ["7 seats", "High ground clearance", "Powerful diesel", "Music system", "Tough build"],
     available: true,
   },
   {
@@ -207,23 +241,29 @@ export const CARS: Car[] = [
     slug: "hyundai-verna",
     name: "Verna",
     brand: "Hyundai",
-    tagline: "Sporty premium sedan",
+    tagline: "Smooth, refined premium sedan",
     category: "Sedan",
     pricePerDay: 3000,
     pricePerHour: 420,
     seats: 5,
-    transmission: "Automatic",
+    transmission: "Manual",
     fuel: "Petrol",
-    topSpeed: 190,
+    topSpeed: 180,
     mileage: 18,
     rating: 4.7,
     reviews: 58,
-    bodyColor: "#6d28d9",
-    accent: "#f5f5f5",
-    image: carImg("1607853554439-0069ec0f29b6"),
+    bodyColor: "#f4f4f2",
+    accent: "#8ab4f8",
+    image: "/cars/hyundai-verna.webp",
+    photoCredit: {
+      author: "Dinkun Chen",
+      license: "CC BY-SA 4.0",
+      source:
+        "https://commons.wikimedia.org/wiki/File:HYUNDAI_VERNA_(HYUNDAI_ACCENT)_(RB,RC)_China_(2).jpg",
+    },
     description:
-      "Sleek, feature-loaded and fun to drive. The Hyundai Verna is a premium sedan choice for business travel and special occasions in style.",
-    features: ["Ventilated seats", "Automatic", "Sunroof", "ADAS features", "Premium cabin"],
+      "Comfortable, refined and easy on fuel. The Hyundai Verna is a solid premium sedan choice for business travel, airport runs and city comfort.",
+    features: ["Spacious cabin", "Smooth ride", "AC with rear vents", "Music system", "Good boot"],
     available: true,
   },
   {
@@ -242,9 +282,15 @@ export const CARS: Car[] = [
     mileage: 12,
     rating: 4.9,
     reviews: 143,
-    bodyColor: "#2b2f33",
-    accent: "#C9A24B",
-    image: carImg("1533473359331-0135ef1b58bf"),
+    bodyColor: "#8a8378",
+    accent: "#E8A860",
+    image: "/cars/toyota-fortuner.webp",
+    photoCredit: {
+      author: "Matti Blume",
+      license: "CC BY-SA 4.0",
+      source:
+        "https://commons.wikimedia.org/wiki/File:Toyota_Fortuner,_Cape_Town_(P1060077).jpg",
+    },
     description:
       "Unmatched road presence and power. The Toyota Fortuner is the ultimate statement SUV — perfect for weddings, VIP travel and premium outstation tours.",
     features: ["4x4 available", "Powerful diesel", "Premium leather", "Commanding presence", "Very reliable"],
@@ -266,18 +312,21 @@ export const CARS: Car[] = [
     mileage: 12,
     rating: 5.0,
     reviews: 47,
-    bodyColor: "#1b1b1d",
-    accent: "#C9A24B",
-    image: carImg("1618843479313-40f8afb4b4d8"),
+    bodyColor: "#ffffff",
+    accent: "#E8A860",
+    image: "/cars/mercedes-e-class.webp",
+    photoCredit: {
+      author: "EurovisionNim",
+      license: "CC BY-SA 4.0",
+      source:
+        "https://commons.wikimedia.org/wiki/File:2018_Mercedes-Benz_E_300_(W_213)_sedan_(2018-11-02)_01.jpg",
+    },
     description:
       "Make an entrance to remember. The Mercedes-Benz E-Class brings executive luxury and elegance — the top choice for weddings, receptions and VIP occasions in Jaipur.",
     features: ["Chauffeur option", "Plush leather", "Ambient lighting", "Premium sound", "Wedding-ready"],
     available: true,
   },
 ];
-
-// A dramatic hero image for the cinematic landing showroom.
-export const HERO_IMAGE = carImg("1552519507-da3b142c6e3d", 1600, 75);
 
 export function getCarBySlug(slug: string): Car | undefined {
   return CARS.find((c) => c.slug === slug);

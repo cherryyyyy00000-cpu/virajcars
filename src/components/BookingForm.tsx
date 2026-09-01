@@ -137,14 +137,14 @@ export default function BookingForm({ car }: { car: Car }) {
     );
     return (
       <div className="card-luxury p-8 text-center">
-        <CheckCircle2 className="mx-auto text-gold" size={56} />
+        <CheckCircle2 className="mx-auto text-brand" size={56} />
         <h3 className="mt-4 font-display text-2xl font-bold">Booking Confirmed!</h3>
         <p className="mt-2 text-sm text-foreground/60">
           Your booking ID is{" "}
-          <span className="font-mono font-semibold text-gold">{success.id}</span>.
+          <span className="font-mono font-semibold text-brand">{success.id}</span>.
           Our concierge will contact you shortly.
         </p>
-        <a href={waHref} target="_blank" rel="noreferrer" className="btn-gold mt-6">
+        <a href={waHref} target="_blank" rel="noreferrer" className="btn-brand mt-6">
           Confirm on WhatsApp
         </a>
       </div>
@@ -156,7 +156,7 @@ export default function BookingForm({ car }: { car: Car }) {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <form onSubmit={handleSubmit} className="card-luxury p-6 sm:p-8">
         <h3 className="font-display text-2xl font-bold">
-          Reserve this <span className="gold-text">{car.name}</span>
+          Reserve this <span className="brand-text">{car.name}</span>
         </h3>
 
         {/* Dates */}
@@ -170,7 +170,7 @@ export default function BookingForm({ car }: { car: Car }) {
               min={today}
               value={form.pickupDate}
               onChange={(e) => update("pickupDate", e.target.value)}
-              className="w-full rounded-xl border border-ink-line bg-ink px-3 py-2.5 text-sm text-foreground outline-none focus:border-gold"
+              className="w-full rounded-xl border border-ink-line bg-ink px-3 py-2.5 text-sm text-foreground outline-none focus:border-brand"
             />
           </label>
           <label className="block">
@@ -182,7 +182,7 @@ export default function BookingForm({ car }: { car: Car }) {
               min={form.pickupDate}
               value={form.returnDate}
               onChange={(e) => update("returnDate", e.target.value)}
-              className="w-full rounded-xl border border-ink-line bg-ink px-3 py-2.5 text-sm text-foreground outline-none focus:border-gold"
+              className="w-full rounded-xl border border-ink-line bg-ink px-3 py-2.5 text-sm text-foreground outline-none focus:border-brand"
             />
           </label>
         </div>
@@ -199,8 +199,8 @@ export default function BookingForm({ car }: { car: Car }) {
                 className={cn(
                   "rounded-xl border px-4 py-2.5 text-sm font-medium capitalize transition-all",
                   form.mode === m
-                    ? "border-gold bg-gold/10 text-gold-light"
-                    : "border-ink-line text-foreground/60 hover:border-gold/40"
+                    ? "border-brand bg-brand/10 text-brand-light"
+                    : "border-ink-line text-foreground/60 hover:border-brand/40"
                 )}
               >
                 {m.replace("-", " ")}
@@ -221,21 +221,21 @@ export default function BookingForm({ car }: { car: Car }) {
             placeholder="Full Name"
             value={form.customerName}
             onChange={(e) => update("customerName", e.target.value)}
-            className="w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-gold"
+            className="w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-brand"
           />
           <input
             type="tel"
             placeholder="Phone Number"
             value={form.phone}
             onChange={(e) => update("phone", e.target.value)}
-            className="w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-gold"
+            className="w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-brand"
           />
           <input
             type="email"
             placeholder="Email (optional)"
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
-            className="w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-gold"
+            className="w-full rounded-xl border border-ink-line bg-ink px-4 py-2.5 text-sm outline-none focus:border-brand"
           />
         </div>
 
@@ -249,8 +249,8 @@ export default function BookingForm({ car }: { car: Car }) {
               className={cn(
                 "flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-all",
                 form.paymentMethod === "online"
-                  ? "border-gold bg-gold/10 text-gold-light"
-                  : "border-ink-line text-foreground/60 hover:border-gold/40"
+                  ? "border-brand bg-brand/10 text-brand-light"
+                  : "border-ink-line text-foreground/60 hover:border-brand/40"
               )}
             >
               <CreditCard size={16} /> Pay Online
@@ -261,8 +261,8 @@ export default function BookingForm({ car }: { car: Car }) {
               className={cn(
                 "flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-all",
                 form.paymentMethod === "cod"
-                  ? "border-gold bg-gold/10 text-gold-light"
-                  : "border-ink-line text-foreground/60 hover:border-gold/40"
+                  ? "border-brand bg-brand/10 text-brand-light"
+                  : "border-ink-line text-foreground/60 hover:border-brand/40"
               )}
             >
               <Banknote size={16} /> Cash on Delivery
@@ -284,13 +284,13 @@ export default function BookingForm({ car }: { car: Car }) {
           )}
           <div className="flex justify-between pt-2 font-display text-xl font-bold">
             <span>Total</span>
-            <span className="gold-text">{formatINR(total)}</span>
+            <span className="brand-text">{formatINR(total)}</span>
           </div>
         </div>
 
         {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
-        <button type="submit" disabled={loading} className="btn-gold mt-6 w-full">
+        <button type="submit" disabled={loading} className="btn-brand mt-6 w-full">
           {loading ? (
             <>
               <Loader2 size={17} className="animate-spin" /> Processing…
